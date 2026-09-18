@@ -481,13 +481,19 @@ GET https://fakestoreapi.com/products
 ไม่ว่าจะเลือกแบบไหน เป้าหมายคือต้องเห็น **ผลลัพธ์จริงจาก Fake Store API** ปรากฏขึ้นมา  ถ้ารันแล้วเจอ error หรือโค้ดจาก Gemini ผิดพลาด (เช่น import ขาด, ชื่อ field ไม่ตรงกับ JSON จริง) ให้จดบันทึกข้อความ error และวิธีแก้ไขไว้ในด้านล่าง
 
 ```text
-บันทึก error และการแก้ไขที่นี่
+401 Unauthorized (API Key ผิด/ไม่อนุมัติ): แก้ไขโดยเปลี่ยนไปใช้ API Key ที่เปิดใช้งานสมบูรณ์แล้ว
+
+404 Not Found (หาเมืองไม่เจอ): ดักจับสถานะ 404 ใน Service แล้วแสดงข้อความแจ้งเตือนภาษาไทยสีแดงบน UI
+
+Network / Offline Error (ไม่มีอินเทอร์เน็ต): ดักจับ ClientException และ SocketException แล้วแจ้งเตือนให้ผู้ใช้เช็คอินเทอร์เน็ต
+
+Timeout Exception (เชื่อมต่อหมดเวลา): ตั้ง .timeout(10s) พร้อมดักจับข้อผิดพลาดเพื่อป้องกันแอปค้าง
+
+Type Mismatch / FormatException (ข้อมูลผิดรูปแบบ): แปลงค่าตัวเลขผ่าน (json['key'] as num).toDouble() เพื่อป้องกันแอปค้างเมื่อเจอเลขจำนวนเต็ม
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
-```text
-บันทึกรูปที่นี่
-```
+![alt text](image-12.png)
 
 ---
 
@@ -546,9 +552,8 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
-```text
-บันทึกรูปที่นี่
-```
+![alt text](image-13.png)
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -570,13 +575,32 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
 ```text
-บันทึกคำตอบที่นี่
+การแปลง JSON อัตโนมัติ: แพ็กเกจ http ต้องใช้ jsonDecode(response.body) เพื่อแปลงข้อความ JSON ให้เป็น Map ด้วยตนเอง ในขณะที่ dio จะแปลงข้อมูล JSON ใน response.data ให้เป็น Map/List ให้อัตโนมัติทันที
+
+การกำหนด Query Parameters: การใช้ http มักต้องนำพารามิเตอร์มาต่อเป็น URL String หรือสร้างวัตถุ Uri เอง แต่ dio รองรับการส่ง Query Parameters ผ่าน Map ในตัวแปร queryParameters: {'q': city, ...} ได้โดยตรง ซึ่งอ่านง่ายและเป็นระเบียบมากกว่า
+
+รูปแบบการจัดการ Exception: http ไม่ได้โยน Error ออกมาเมื่อเจอรหัส Status Code เช่น 404 หรือ 500 (ต้องเขียนเช็ค statusCode เอง) และต้องดักจับ SocketException หรือ TimeoutException แยกกันหลายชนิด แต่ dio รวมการจัดการข้อผิดพลาดทั้งหมดไว้ใน DioException เดียวกัน และสามารถแยกสาเหตุได้สะดวกผ่าน e.type (เช่น connectionTimeout, badResponse, connectionError)
 ```
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
-```text
-บันทึกคำตอบที่นี่
+```dart
+} on DioException catch (e) {
+  if (e.type == DioExceptionType.connectionTimeout) {
+    throw Exception('การเชื่อมต่อหมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.badResponse) {
+    // ตัวอย่าง: เซิร์ฟเวอร์ตอบกลับมาแล้วแต่ status code ผิดพลาด (เช่น 404, 500)
+    throw Exception('เซิร์ฟเวอร์ตอบกลับผิดพลาด (${e.response?.statusCode})');
+  } else if (e.type == DioExceptionType.receiveTimeout) {
+    // กรณีที่ส่ง Request ไปได้แล้ว แต่รอรับข้อมูลจากเซิร์ฟเวอร์นานเกินกำหนด
+    throw Exception('การรับข้อมูลจากเซิร์ฟเวอร์หมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.connectionError) {
+    // กรณีที่ไม่สามารถเชื่อมต่อเครือข่ายได้ เช่น ไม่ได้เปิดอินเทอร์เน็ต หรือ DNS มีปัญหา
+    throw Exception('ไม่สามารถเชื่อมต่อเครือข่ายได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
+  }
+  
+  throw Exception('เกิดข้อผิดพลาด: ${e.message}');
+}
 ```
 ---
 

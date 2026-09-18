@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/weather.dart';
 import '../services/weather_service.dart';
 import '../services/demo_post_service.dart';
-import '../services/ai_product_service.dart'; // 1. import ไฟล์บริการใหม่ที่นี่
+import '../services/ai_product_service.dart';
+import '../services/weather_service_dio.dart'; // import บริการ Dio เพิ่มเติม
 
 enum _ViewStatus { idle, loading, success, error }
 
@@ -42,7 +43,7 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('ค้นหาสภาพอากาศ')),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -67,8 +68,6 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
               child: const Text('ทดลอง PUT (ขั้นตอนที่ 3.2)'),
             ),
             const SizedBox(height: 12),
-
-            // 2. เพิ่มปุ่มทดลองเรียก fetchAiProducts()
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -87,6 +86,29 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
                 }
               },
               child: const Text('ทดลองดึงรายการสินค้า (AiProduct)'),
+            ),
+            const SizedBox(height: 12),
+
+            // ปุ่มทดลอง Dio (ขั้นตอนที่ 5.1)
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  final city = _cityController.text.isEmpty
+                      ? 'Bangkok'
+                      : _cityController.text;
+                  print('--- ทดสอบเรียก API ด้วย Dio ($city) ---');
+                  final weather = await fetchWeatherWithDio(city);
+
+                  // print ค่าทั้ง 4 ฟิลด์ออกทาง Debug Console
+                  print('เมือง: ${weather.cityName}');
+                  print('อุณหภูมิ: ${weather.temperature} °C');
+                  print('คำอธิบาย: ${weather.description}');
+                  print('ความรู้สึกจริง (Feels Like): ${weather.feelsLike} °C');
+                } catch (e) {
+                  print('Dio Error: $e');
+                }
+              },
+              child: const Text('ทดลอง Dio (ขั้นตอนที่ 5.1)'),
             ),
 
             const SizedBox(height: 16),
