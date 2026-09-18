@@ -77,18 +77,39 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
-```text
-บันทึกรูปและคำตอบที่นี่
+
+<img width="1912" height="907" alt="image" src="https://github.com/user-attachments/assets/2643e0a0-cb84-4c4b-82f9-4dd66b1223d7" />
+
+
+
+**key ใน JSON**
+
 ```
+1. name ใช้สำหรับแสดง ชื่อเมือง เช่น Bangkok
+2.main.temp  ใช้สำหรับแสดง อุณหภูมิปัจจุบัน
+3.main.feels_like ใช้สำหรับแสดง อุณหภูมิที่รู้สึกเหมือนจริง 
+4.weather[0].description  ใช้สำหรับแสดง คำอธิบายสภาพอากาศ
+
+```
+
+
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
-```text
-บันทึกรูปและคำตอบที่นี่
+
+<img width="1417" height="537" alt="image" src="https://github.com/user-attachments/assets/73bf5a15-7ade-4210-83ac-00f9fbb07351" />
+
+
 ```
+1.เลือกทดสอบ เปลี่ยนชื่อเมืองในพารามิเตอร์ q เป็นชื่อที่ไม่มีอยู่จริงเป็น NoCity
+2.คาดว่า Status Code จะเป็น 404 Not Found
+3.Status Code จริงที่ได้  404 (ตรงกับที่คาดการณ์ไว้)
+4.Status Code ผลลัพธ์ที่ได้อยู่ในช่วง 404 Not Found และ Response Body แจ้งเตือนว่า city not found ซึ่งตรงกับการทดสอบกรณีเปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง
+```
+
 ---
 
 ## ส่วนที่ 2: สร้าง Model Class และเรียก API ด้วย http Package
@@ -182,8 +203,12 @@ void main() {
 
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
 
-```text
-บันทึกรูปที่นี่
+
+<img width="1857" height="950" alt="image" src="https://github.com/user-attachments/assets/fd20202a-e9b8-493d-aad5-79b762b7e6b6" />
+
+
+```
+ค่าที่พิมพ์ออกมาใน Terminal ประกอบด้วย cityName: Bangkok, temperature: 32.5, description: เมฆบางส่วน
 ```
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -232,9 +257,9 @@ class WeatherService {
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+
+<img width="1852" height="902" alt="image" src="https://github.com/user-attachments/assets/b4bad4d7-9409-4edf-924c-b386d4e3cf15" />
+
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -351,9 +376,21 @@ class MyApp extends StatelessWidget {
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
-```text
-บันทึกรูปที่นี่
-```
+1) ค้นหาเมืองที่มีจริง
+
+<img width="1287" height="740" alt="image" src="https://github.com/user-attachments/assets/b3788cab-b550-4b13-a2ac-385536d8ba66" />
+
+
+2) ค้นหาเมืองที่ไม่มีอยู่จริง
+
+<img width="1287" height="797" alt="image" src="https://github.com/user-attachments/assets/0811c0ed-317c-4da2-9b8b-4ce6a04b374e" />
+
+
+
+3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา
+
+<img width="1277" height="581" alt="image" src="https://github.com/user-attachments/assets/ad9c3c88-3abc-4790-b881-77bd564f1478" />
+
 
 ---
 
@@ -402,9 +439,10 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+
+
+<img width="1862" height="932" alt="image" src="https://github.com/user-attachments/assets/58a8da14-317a-4fff-a5b8-39ba00de6fcb" />
+
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -429,9 +467,9 @@ Future<void> updateDemoPost() async {
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+
+<img width="1850" height="892" alt="image" src="https://github.com/user-attachments/assets/40525b33-fb3b-420d-b966-049ecdd132c3" />
+
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
@@ -479,14 +517,15 @@ GET https://fakestoreapi.com/products
 
 ไม่ว่าจะเลือกแบบไหน เป้าหมายคือต้องเห็น **ผลลัพธ์จริงจาก Fake Store API** ปรากฏขึ้นมา  ถ้ารันแล้วเจอ error หรือโค้ดจาก Gemini ผิดพลาด (เช่น import ขาด, ชื่อ field ไม่ตรงกับ JSON จริง) ให้จดบันทึกข้อความ error และวิธีแก้ไขไว้ในด้านล่าง
 
-```text
-บันทึก error และการแก้ไขที่นี่
+```
+ไม่มี
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
-```text
-บันทึกรูปที่นี่
-```
+
+
+<img width="1831" height="962" alt="image" src="https://github.com/user-attachments/assets/0b1dfc06-d005-4b00-8b57-3b16d17430b9" />
+
 
 ---
 
@@ -545,9 +584,10 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
-```text
-บันทึกรูปที่นี่
-```
+
+<img width="1857" height="920" alt="image" src="https://github.com/user-attachments/assets/2f8661af-6590-46e9-a2c4-fc3d7054c8e6" />
+
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -568,15 +608,25 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
-```text
-บันทึกคำตอบที่นี่
 ```
->
-> ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
+1.การแปลงข้อมูล JSON
+- http ต้องเขียนโค้ดแปลงข้อมูลดิบด้วยตัวเองทุกครั้ง (jsonDecode) ก่อนนำไปใช้งาน   
+- dio: แปลงข้อมูล JSON ให้เป็น Map หรือ List อัตโนมัติ พร้อมใช้งานทันทีผ่าน response.data
+ 2.การส่งค่าพารามิเตอร์ 
+- http ต้องต่อ URL เองแบบยาว ๆ เป็น String (เช่น ?q=city&appid=key) ซึ่งเสี่ยงต่อการพิมพ์ผิด   
+- dio แยกใส่เป็นก้อน queryParameters: {...} ต่างหาก ช่วยให้โค้ดเป็นระเบียบและจัดการตัวอักษรพิเศษให้อัตโนมัติ   
+3.การจัดการ Error และ Timeout
+- http  ต้องเขียนดักจับ Error หลายตัวแยกกันตามประเภท (เช่น TimeoutException, ClientException)   
+- dio  ใช้ตัวจัดการตัวเดียวคือ DioException แล้วแยกประเภทปัญหาด้วย e.type ทำให้โค้ดกระชับและจัดการง่ายขึ้น
 
-```text
-บันทึกคำตอบที่นี่
 ```
+
+> ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4
+
+
+<img width="1857" height="941" alt="image" src="https://github.com/user-attachments/assets/a8c8862e-fbbf-42e7-b0ef-9f5aedf56bea" />
+
+
 ---
 
 ## ส่วนที่ 7: ต่อยอดเข้าสู่โปรเจกต์ Campus Marketplace
@@ -698,9 +748,10 @@ void main() {
 
 > ✅ **Checkpoint 7.1** ถ่ายภาพ Debug Console ที่ทดสอบ `Item.fromJson()` กับ JSON ตัวอย่างข้างต้นแล้ว print ค่าทั้ง 6 ฟิลด์ออกมาได้ถูกต้อง
 
-```text
-บันทึกรูปที่นี่
-```
+
+<img width="1872" height="1005" alt="image" src="https://github.com/user-attachments/assets/a258bccf-ed01-4205-ba77-8acb3679f553" />
+
+
 ### ขั้นตอนที่ 7.3 — 🔧 ทำตาม (Interface) + 🧠 คิดเอง (Implementation)
 
 ในสัปดาห์ก่อนหน้า มีการเรียนหลักการ **Repository Pattern** ไปแล้วว่า Widget/ViewModel ไม่ควรรู้จักแหล่งข้อมูลโดยตรง (เช่น เรียก `http.get()` เองในไฟล์ UI) แต่ควรรู้จักผ่าน **Interface** เท่านั้น เพื่อให้สลับแหล่งข้อมูลได้โดยไม่ต้องแก้ Widget สัปดาห์นี้ Campus Marketplace มีแหล่งข้อมูลจริงให้ดึง (REST API) ซึ่งจะนำทฤษฎีเรื่อง Repository Pattern มาใช้งานจริง
@@ -835,9 +886,10 @@ class _HomePageState extends State<HomePage> {
 
 > ✅ **Checkpoint 7.3** รันแอปแล้วถ่ายภาพหน้าจอ Home ที่แสดงรายการสินค้าจริงจาก Fake Store API ผ่าน `ItemRepositoryApi` (ไม่ใช่ข้อมูล mock up) พร้อมภาพโครงสร้างไฟล์ที่แสดงให้เห็นว่ามีทั้ง `item_repository.dart` (Interface) และ `item_repository_api.dart` (Impl) แยกกันชัดเจน และทดสอบว่าปุ่ม "เพิ่มลงตะกร้า" กับการกดไปหน้า `CheckoutPage` จากสัปดาห์ที่ 5 ยังทำงานได้ปกติกับข้อมูล `Item` ชุดใหม่นี้ 
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="1287" height="895" alt="image" src="https://github.com/user-attachments/assets/3a18c050-9935-4688-a222-5d5f4c723c9c" />
+
+<img width="1271" height="652" alt="image" src="https://github.com/user-attachments/assets/0e67f8c7-8408-4d51-b675-1b19682036d8" />
+
 
 ---
 
