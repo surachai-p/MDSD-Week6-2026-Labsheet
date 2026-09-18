@@ -392,9 +392,10 @@ class MyApp extends StatelessWidget {
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="926" height="302" alt="image-6" src="https://github.com/user-attachments/assets/58efeb0d-6860-45ba-861f-31031540aa66" />
+<img width="926" height="311" alt="image-7" src="https://github.com/user-attachments/assets/754dc84d-7948-4f83-94ca-ede6623e3540" />
+<img width="930" height="323" alt="image-8" src="https://github.com/user-attachments/assets/63ce04d0-6dc0-4196-be66-4e4d9a57c624" />
+
 
 ---
 
@@ -443,9 +444,9 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+
+<img width="315" height="134" alt="image-9" src="https://github.com/user-attachments/assets/31ee0149-2ac0-448a-a93b-bc8c7621cc1c" />
+
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -470,9 +471,8 @@ Future<void> updateDemoPost() async {
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="389" height="156" alt="image-10" src="https://github.com/user-attachments/assets/63f0323f-395d-4755-829a-3968b3f97412" />
+
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
