@@ -82,23 +82,41 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 <img width="1427" height="441" alt="image-1" src="https://github.com/user-attachments/assets/063fef79-062e-4718-ba48-e1f342882b39" />
 
 key JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป
+
 name: 
+
 sys.country: 
+
 dt: 
+
 weather[].main: 
+
 weather[].description: 
+
 weather[].icon: 
+
 main.temp: 
+
 main.feels_like: 
+
 main.temp_min: 
+
 main.temp_max: 
+
 main.humidity: 
+
 main.pressure: 
+
 wind.speed:  
+
 wind.deg:  
+
 visibility:  
+
 clouds.all:  
+
 sys.sunrise:  
+
 sys.sunset: 
 
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
