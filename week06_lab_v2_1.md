@@ -77,8 +77,17 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
-```text
-บันทึกรูปและคำตอบที่นี่
+``
+![alt text](image.png)
+
+| ข้อมูลที่ต้องแสดง | Key ที่ใช้ | ค่า |
+|---|---|---|
+| ชื่อเมือง | `name` | `"กรุงเทพมหานคร"` |
+| อุณหภูมิ | `main.temp` | `31.38` |
+| ความรู้สึกจริง (Feels Like) | `main.feels_like` | `38.38` |
+| คำอธิบายสภาพอากาศ | `weather[0].description` | `"เมฆกระจาย"` |
+
+
 ```
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -86,9 +95,11 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
-```text
-บันทึกรูปและคำตอบที่นี่
 ```
+ทดสอบโดย - เอา appid ออก 
+คาดการณ์ - จะขึ้น 401 Unauthorized
+![alt text](image-1.png)
+``
 ---
 
 ## ส่วนที่ 2: สร้าง Model Class และเรียก API ด้วย http Package
@@ -182,8 +193,8 @@ void main() {
 
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
 
-```text
-บันทึกรูปที่นี่
+``
+![alt text](image-2.png)
 ```
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -232,8 +243,17 @@ class WeatherService {
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
-```text
-บันทึกรูปและคำตอบที่นี่
+``
+ผลรัน run
+![alt text](image-3.png)
+
+กรณีที่ 1
+-เปลี่ยน 'bangkok' เป็น 'Asdfghjkl123'
+![alt text](image-4.png)
+
+กรณีที่ 2
+-เปลี่ยนกลับมาเป็น 'bangkok' แล้วปิด internet ทดสอบ
+![alt text](image-5.png)
 ```
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
@@ -351,8 +371,15 @@ class MyApp extends StatelessWidget {
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
-```text
-บันทึกรูปที่นี่
+``
+(1) ค้นหาเมืองที่มีจริง
+![alt text](image-6.png)
+
+(2) ค้นหาเมืองที่ไม่มีอยู่จริง 
+![alt text](image-7.png)
+
+(3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา
+![alt text](image-8.png)
 ```
 
 ---
@@ -402,8 +429,8 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
-```text
-บันทึกรูปและคำตอบที่นี่
+``
+![alt text](image-9.png)
 ```
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
@@ -429,8 +456,8 @@ Future<void> updateDemoPost() async {
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
 
-```text
-บันทึกรูปและคำตอบที่นี่
+``
+![alt text](image-10.png)
 ```
 ---
 
@@ -479,13 +506,29 @@ GET https://fakestoreapi.com/products
 
 ไม่ว่าจะเลือกแบบไหน เป้าหมายคือต้องเห็น **ผลลัพธ์จริงจาก Fake Store API** ปรากฏขึ้นมา  ถ้ารันแล้วเจอ error หรือโค้ดจาก Gemini ผิดพลาด (เช่น import ขาด, ชื่อ field ไม่ตรงกับ JSON จริง) ให้จดบันทึกข้อความ error และวิธีแก้ไขไว้ในด้านล่าง
 
-```text
-บันทึก error และการแก้ไขที่นี่
+```
+-eror ที่เกิดขึ้น
+
+บันทึก error และการแก้ไข:
+
+ก่อนนำโค้ดไปทดสอบจริง ได้ตรวจสอบโค้ดที่ Gemini generate ให้ในขั้นตอน 4.1 
+ก่อน พบว่ามีการ import 'dart:io' เพื่อใช้ SocketException ในการดักจับ 
+error แต่ dart:io เป็น library ที่ใช้ได้เฉพาะ Android/iOS/Desktop 
+ไม่รองรับ Flutter Web ซึ่งโปรเจกต์นี้รันด้วย flutter run -d chrome 
+ถ้านำไปใช้ตรง ๆ จะ compile ไม่ผ่าน
+
+วิธีแก้: ตัด import 'dart:io' และเงื่อนไข on SocketException ออก 
+เนื่องจาก on http.ClientException ที่มีอยู่แล้วครอบคลุมกรณีเชื่อมต่อ
+เซิร์ฟเวอร์ไม่ได้อยู่แล้ว ไม่จำเป็นต้องดักซ้ำอีกชนิดหนึ่ง
+
+หลังแก้ไขแล้วนำไปวางใน ai_product_service.dart และรันไฟล์ทดสอบ 
+test_ai_product.dart ผ่านสำเร็จตั้งแต่ครั้งแรก ไม่พบ error ระหว่างรันจริง 
+ได้ผลลัพธ์รายการสินค้าครบทั้ง 20 รายการจาก Fake Store API
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
-```text
-บันทึกรูปที่นี่
+```
+![alt text](image-12.png)
 ```
 
 ---
@@ -545,8 +588,8 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
-```text
-บันทึกรูปที่นี่
+``
+![alt text](image-13.png)
 ```
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -569,13 +612,31 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
 ```text
-บันทึกคำตอบที่นี่
+เปรียบเทียบ http กับ dio จากที่สังเกตได้จริงตอนทดลอง:
+
+1. การแปลง JSON: http ต้องเรียก jsonDecode(response.body) เอง
+   ก่อนนำไปใช้งาน ส่วน dio แปลง JSON ให้อัตโนมัติ เข้าถึงได้ตรง
+   ผ่าน response.data โดยไม่ต้อง import dart:convert เลย
+
+2. การกำหนด Query Parameters: http ต้องต่อ string URL เอง
+   เช่น '$_baseUrl?q=$city&appid=$_apiKey&units=metric'
+   ส่วน dio ใช้ queryParameters เป็น Map เช่น 
+   {'q': city, 'appid': apiKey, 'units': 'metric'}
+   ทำให้โค้ดอ่านง่ายกว่าและลดโอกาสพิมพ์ URL ผิดรูปแบบหรือลืม encode
+
+3. การจัดการ Exception: http ต้องดักจับหลายชนิดแยกกันด้วยหลาย 
+   catch clause (on TimeoutException, on http.ClientException, 
+   on FormatException) ส่วน dio รวมทุก error ไว้ในชนิดเดียวคือ 
+   DioException แล้วแยกย่อยด้วยการเช็ค e.type ผ่าน if-else 
+   (DioExceptionType.connectionTimeout, badResponse, 
+   connectionError ฯลฯ) ทำให้จัดการ error ในจุดเดียวแต่ต้องเขียน
+   เงื่อนไขแยกภายในแทน
 ```
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
-```text
-บันทึกคำตอบที่นี่
+``
+![alt text](image-14.png)
 ```
 ---
 
@@ -698,8 +759,8 @@ void main() {
 
 > ✅ **Checkpoint 7.1** ถ่ายภาพ Debug Console ที่ทดสอบ `Item.fromJson()` กับ JSON ตัวอย่างข้างต้นแล้ว print ค่าทั้ง 6 ฟิลด์ออกมาได้ถูกต้อง
 
-```text
-บันทึกรูปที่นี่
+``
+![alt text](image-15.png)
 ```
 ### ขั้นตอนที่ 7.3 — 🔧 ทำตาม (Interface) + 🧠 คิดเอง (Implementation)
 
@@ -835,9 +896,11 @@ class _HomePageState extends State<HomePage> {
 
 > ✅ **Checkpoint 7.3** รันแอปแล้วถ่ายภาพหน้าจอ Home ที่แสดงรายการสินค้าจริงจาก Fake Store API ผ่าน `ItemRepositoryApi` (ไม่ใช่ข้อมูล mock up) พร้อมภาพโครงสร้างไฟล์ที่แสดงให้เห็นว่ามีทั้ง `item_repository.dart` (Interface) และ `item_repository_api.dart` (Impl) แยกกันชัดเจน และทดสอบว่าปุ่ม "เพิ่มลงตะกร้า" กับการกดไปหน้า `CheckoutPage` จากสัปดาห์ที่ 5 ยังทำงานได้ปกติกับข้อมูล `Item` ชุดใหม่นี้ 
 
-```text
-บันทึกรูปที่นี่
-```
+``
+![alt text](image-16.png)
+
+![alt text](image-17.png)
+`
 
 ---
 
