@@ -894,7 +894,8 @@ class _HomePageState extends State<HomePage> {
 ```text
 บันทึกรูปที่นี่
 ```
-<img width="1917" height="1143" alt="image" src="https://github.com/user-attachments/assets/49134aa7-c70e-4a8a-a8a1-f2420e3651fd" />
+<img width="1917" height="1135" alt="image" src="https://github.com/user-attachments/assets/3656e1cd-a6e6-463c-9f25-d0bcf400b1da" />
+
 
 ---
 
