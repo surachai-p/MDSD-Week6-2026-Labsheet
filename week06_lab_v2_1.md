@@ -80,6 +80,9 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
+
+<img width="1917" height="1008" alt="image" src="https://github.com/user-attachments/assets/c320da9c-4f71-4c05-8f5a-47c7b86f4d0d" />
+
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
@@ -87,8 +90,15 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+ใส่ appid (API Key) ผิด
+คาดการณ์ Status Code: 401 Unauthorized
+Status Code จริงที่ได้: 401 Unauthorized
+ผลการทดสอบ: ผลที่ได้ตรงกับที่คาดการณ์ไว้
+อธิบาย: Status Code 401 อยู่ในช่วง 4xx Client Error ซึ่งเป็นข้อผิดพลาดจากคำขอของฝั่งผู้ใช้ ในกรณีนี้เกิดจากการระบุ API Key ไม่ถูกต้อง ทำให้เซิร์ฟเวอร์ไม่อนุญาตให้เข้าถึงข้อมูลสภาพอากาศ
 ```
+
+<img width="1436" height="652" alt="image" src="https://github.com/user-attachments/assets/788bda41-af9e-4f86-90da-6bdc65c8df67" />
+
 ---
 
 ## ส่วนที่ 2: สร้าง Model Class และเรียก API ด้วย http Package
@@ -185,6 +195,9 @@ void main() {
 ```text
 บันทึกรูปที่นี่
 ```
+
+<img width="475" height="155" alt="image" src="https://github.com/user-attachments/assets/a90248f0-11c3-4cba-9a5c-4d2393db5dbb" />
+
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
 สร้างไฟล์ `lib/services/weather_service.dart` แล้วเขียน `WeatherService` ต่อจากตัวอย่างโครงเริ่มต้นด้านล่างนี้  
@@ -233,8 +246,30 @@ class WeatherService {
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+**กรณีที่ 1: เรียกข้อมูลสำเร็จ**
+* ชื่อเมืองที่ทดสอบ: Bangkok
+* Status Code ที่ได้: **200 OK**
+* ผลการตรวจสอบ: สามารถเรียกข้อมูลสภาพอากาศจาก OpenWeather API ได้สำเร็จ
+
+**กรณีที่ 2: ไม่พบเมือง**
+* ชื่อเมืองที่ทดสอบ: abcdefxyz
+* Status Code ที่ได้: **404 Not Found**
+* ผลการตรวจสอบ: ไม่พบข้อมูลเมืองที่ระบุ จึงแสดงข้อความแจ้งเตือนว่าไม่พบเมืองที่ค้นหา
+
 ```
+
+```
+แบบสำเร็จ
+```
+<img width="1435" height="898" alt="image" src="https://github.com/user-attachments/assets/b2957d4d-137b-4901-a3d9-e889061b50d2" />
+
+```
+แบบไม่สำเร็จ404
+```
+
+<img width="1427" height="675" alt="image" src="https://github.com/user-attachments/assets/e6e5d0db-2de2-4dc9-a713-3458df10fa44" />
+
+
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -355,6 +390,23 @@ class MyApp extends StatelessWidget {
 บันทึกรูปที่นี่
 ```
 
+```
+1. ค้นหาเมืองที่มีจริง
+```
+<img width="951" height="427" alt="image" src="https://github.com/user-attachments/assets/fe7c5fb1-2234-4db9-beb9-4557caee087b" />
+
+```
+2. ค้นหาเมืองที่ไม่มีอยู่จริง
+```
+<img width="946" height="510" alt="image" src="https://github.com/user-attachments/assets/d83f6599-f6ec-4499-ad75-351d73842ad9" />
+
+```
+3. ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา
+```
+<img width="952" height="472" alt="image" src="https://github.com/user-attachments/assets/43662207-8d1f-4f64-b2f0-4f6cea7498d7" />
+
+<img width="942" height="457" alt="image" src="https://github.com/user-attachments/assets/57bcf822-db88-4462-8b52-a69a774bca41" />
+
 ---
 
 ## ส่วนที่ 3: ทดลองเรียก HTTP Method อื่นนอกเหนือจาก GET
@@ -403,8 +455,13 @@ ElevatedButton(
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
 ```text
-บันทึกรูปและคำตอบที่นี่
+ผลการทดสอบ: การเรียก HTTP PUT สำเร็จ
+Status Code: 200 OK
+Response Body แสดงข้อมูลที่ถูกส่งไปแก้ไข ได้แก่ id, title, body และ userId
 ```
+
+<img width="270" height="182" alt="image" src="https://github.com/user-attachments/assets/23d0bc98-7ae5-4434-925f-a51e6785904b" />
+
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -430,8 +487,10 @@ Future<void> updateDemoPost() async {
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+การเรียก HTTP Method แบบ PUT สำเร็จ โดยได้รับ Status Code 200 OK และได้รับ Response Body กลับมาจากเซิร์ฟเวอร์ ซึ่งแสดงข้อมูลรหัสนักศึกษาและชื่อนักศึกษาที่ส่งไป
 ```
+<img width="313" height="221" alt="image" src="https://github.com/user-attachments/assets/502f79cd-7953-4778-b4ac-3b5c810d60fe" />
+
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
@@ -480,13 +539,24 @@ GET https://fakestoreapi.com/products
 ไม่ว่าจะเลือกแบบไหน เป้าหมายคือต้องเห็น **ผลลัพธ์จริงจาก Fake Store API** ปรากฏขึ้นมา  ถ้ารันแล้วเจอ error หรือโค้ดจาก Gemini ผิดพลาด (เช่น import ขาด, ชื่อ field ไม่ตรงกับ JSON จริง) ให้จดบันทึกข้อความ error และวิธีแก้ไขไว้ในด้านล่าง
 
 ```text
-บันทึก error และการแก้ไขที่นี่
+พบข้อผิดพลาดขณะเรียกใช้ ProductListPage
+Error:
+Error when reading 'lib/product_list_page.dart':
+The system cannot find the file specified.
+สาเหตุ:
+ยังไม่มีไฟล์ product_list_page.dart ในโฟลเดอร์ lib
+วิธีแก้ไข:
+สร้างไฟล์ lib/product_list_page.dart และเพิ่มโค้ด ProductListPage จากนั้นตรวจสอบ import 'product_list_page.dart'; ใน main.dart และรันโปรแกรมใหม่
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
 ```text
 บันทึกรูปที่นี่
 ```
+
+<img width="361" height="916" alt="image" src="https://github.com/user-attachments/assets/e86e0b9d-d5ff-4c6d-99a1-b06164978342" />
+
+
 
 ---
 
@@ -548,6 +618,9 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 ```text
 บันทึกรูปที่นี่
 ```
+
+<img width="333" height="210" alt="image" src="https://github.com/user-attachments/assets/4ccce6a4-b523-4f97-8191-fffc549680b8" />
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -569,13 +642,29 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
 ```text
-บันทึกคำตอบที่นี่
+1. การแปลง JSON
+http ต้องใช้ jsonDecode(response.body) เพื่อแปลง JSON เป็น Map แต่ Dio สามารถแปลง JSON ให้อัตโนมัติและเข้าถึงข้อมูลผ่าน response.data ได้
+2. การกำหนด Query Parameters
+http มักเขียน Query Parameters ต่อท้าย URL เอง เช่น ?q=Bangkok&units=metric ส่วน Dio สามารถกำหนดผ่าน queryParameters ได้ ทำให้เขียนโค้ดและอ่านได้ง่ายกว่า
+3. การจัดการ Exception
+http สามารถดักจับ Exception หลายประเภท เช่น TimeoutException และ SocketException ส่วน Dio มี DioException และสามารถตรวจสอบประเภทของข้อผิดพลาดผ่าน DioExceptionType ได้
 ```
+
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
 ```text
-บันทึกคำตอบที่นี่
+} on DioException catch (e) {
+  if (e.type == DioExceptionType.connectionTimeout) {
+    throw Exception('การเชื่อมต่อหมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.receiveTimeout) {
+    throw Exception('รอรับข้อมูลนานเกินไป กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.connectionError) {
+    throw Exception('ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้');
+  } else {
+    throw Exception('เกิดข้อผิดพลาด: ${e.message}');
+  }
+}
 ```
 ---
 
@@ -838,6 +927,7 @@ class _HomePageState extends State<HomePage> {
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="635" height="903" alt="image" src="https://github.com/user-attachments/assets/8b598c37-0a2b-4891-abae-f425bfb3f3f4" />
 
 ---
 
