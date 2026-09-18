@@ -76,18 +76,30 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 กด **Send** แล้วสังเกตผลลัพธ์สองส่วนคือ **Status Code** ที่แสดงมุมขวาบน และ **Response Body** ที่เป็น JSON ด้านล่าง
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
+<img width="1580" height="992" alt="image" src="https://github.com/user-attachments/assets/5bf4993f-c1fc-4f9a-be89-ced46c31b3a4" />
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+ชื่อเมือง: name (ค่า: "กรุงเทพมหานคร")
+
+อุณหภูมิปัจจุบัน: main.temp (ค่า: 30.09)
+
+คำอธิบายสภาพอากาศ: weather[0].description (ค่า: "เมฆกระจาย")
+
+ไอคอนสภาพอากาศ: weather[0].icon (ค่า: "03d")
+
+อุณหภูมิที่รู้สึกจริง (Feels like): main.feels_like (ค่า: 36.82)
+
+ความชื้นสัมพัทธ์: main.humidity (ค่า: 76)
 ```
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
+<img width="886" height="645" alt="image" src="https://github.com/user-attachments/assets/ac03de37-3bab-4944-9f84-5eb65ad4d39b" />
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+คาดการณ์ Status Code: 401 Unauthorized ตรงกับที่คาดไว้ ผลลัพธ์ที่ได้จัดอยู่ในช่วง 4xx Client Error ซึ่งเป็นรหัสแจ้งเตือนข้อผิดพลาดที่เกิดจากฝั่งผู้ส่งคำขอ Client โดยเฉพาะรหัส 401 Unauthorized หมายถึงคำขอถูกปฏิเสธเนื่องจากขาดข้อมูลการยืนยันตัวตนที่ถูกต้อง Invalid/Missing API Key เซิร์ฟเวอร์จึงไม่สามารถอนุญาตให้ดึงข้อมูลได้ 
 ```
 ---
 
@@ -181,9 +193,10 @@ void main() {
 รันไฟล์นี้แยกจากแอปหลัก — ใน VS Code เปิดไฟล์นี้แล้วกด **Run** ที่มุมขวาบน (หรือคลิกขวา > Run) หรือรันจาก terminal ด้วยคำสั่ง `dart run lib/test_weather_parse.dart` เพราะไฟล์นี้มี `main()` ของตัวเอง จึงรันแยกจากแอป Flutter หลักได้ทันทีโดยไม่ต้องเปิดโปรแกรมทั้งแอป
 
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
+<img width="555" height="137" alt="image" src="https://github.com/user-attachments/assets/b7a49cfc-5d6a-491c-89b0-e5cc0ff9406f" />
 
 ```text
-บันทึกรูปที่นี่
+ผลลัพธ์ที่ print() ออกมาใน Debug Console ตรงกับข้อมูล JSON จริงจาก Postman
 ```
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -231,9 +244,10 @@ class WeatherService {
 
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
+<img width="295" height="146" alt="image" src="https://github.com/user-attachments/assets/f58a5702-5a64-4921-a8fa-7a0f1492a0c0" />
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+กรณีดึงข้อมูลสำเร็จ Status Code คือ 200 เมื่อระบุเมืองถูกต้องอย่าง Bangkok ระบบจะแปลง JSON เป็นวัตถุ Weather ได้เรียบร้อย ส่วนกรณีระบุเมืองไม่ถูกต้อง Status Code คือ 404 ระบบจะเข้าเงื่อนไขโยน Exception แจ้งเตือนว่าไม่พบข้อมูลเมืองที่ระบุ
 ```
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
@@ -350,6 +364,9 @@ class MyApp extends StatelessWidget {
 ```
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
+<img width="1280" height="391" alt="image" src="https://github.com/user-attachments/assets/1dfa84aa-7c22-41c0-b388-773baeadac7b" />
+<img width="1290" height="365" alt="image" src="https://github.com/user-attachments/assets/d6fd3dcf-36bd-45c1-995d-eaaabf4c5375" />
+<img width="976" height="601" alt="image" src="https://github.com/user-attachments/assets/cc2ba20e-5dfa-4bc0-944d-bac4bf965900" />
 
 ```text
 บันทึกรูปที่นี่
@@ -400,12 +417,19 @@ ElevatedButton(
 ```
 
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
+<img width="377" height="212" alt="image" src="https://github.com/user-attachments/assets/f57802f6-96ad-483c-b85e-5414bcc9b0c7" />
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
 ```text
-บันทึกรูปและคำตอบที่นี่
+}
+Status Code: 201
+Response Body: {
+  "title": "ทดสอบส่งข้อมูลจาก Flutter",
+  "body": "นี่คือเนื้อหาที่ส่งด้วย HTTP POST",
+  "userId": 1,
+  "id": 101
+}
 ```
-
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
 เขียนฟังก์ชัน `updateDemoPost()` เพิ่มเติมด้วยตัวเอง โดยใช้ `createDemoPost()` ในขั้นตอนที่ 3.1 เป็นต้นแบบโครงสร้าง แต่เปลี่ยนให้เรียก HTTP Method **PUT** ไปยัง `https://jsonplaceholder.typicode.com/posts/1` พร้อม body ที่คุณกำหนดเนื้อหาให้มีชื่อนักศึกษา  โครงเริ่มต้นด้านล่างให้เฉพาะชื่อฟังก์ชันและ `Uri` เป็นตัวอย่าง ส่วนการเรียก `http.put()` พร้อม body และการ print ผลลัพธ์ให้เขียนต่อเอง
@@ -428,9 +452,16 @@ Future<void> updateDemoPost() async {
 ```
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
+<img width="340" height="202" alt="image" src="https://github.com/user-attachments/assets/90aed5d5-bc60-4394-8f67-e37d2b82d3bf" />
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+Status Code: 200
+Response Body: {
+  "id": 1,
+  "studentId": "67030215",
+  "studentName": "วิศวะ กำจร",
+  "title": "อัปเดตข้อมูลด้วย HTTP PUT"
+}
 ```
 ---
 
@@ -480,13 +511,19 @@ GET https://fakestoreapi.com/products
 ไม่ว่าจะเลือกแบบไหน เป้าหมายคือต้องเห็น **ผลลัพธ์จริงจาก Fake Store API** ปรากฏขึ้นมา  ถ้ารันแล้วเจอ error หรือโค้ดจาก Gemini ผิดพลาด (เช่น import ขาด, ชื่อ field ไม่ตรงกับ JSON จริง) ให้จดบันทึกข้อความ error และวิธีแก้ไขไว้ในด้านล่าง
 
 ```text
-บันทึก error และการแก้ไขที่นี่
+ไม่พบ Error หรือข้อผิดพลาดในการรัน โค้ดสามารถเชื่อมต่อและดึงข้อมูลจาก Fake Store API ได้สำเร็จ 100%
+
+รายละเอียดการตรวจสอบ:
+1. การ Import แพ็กเกจ: มีการ import 'dart:async', 'dart:convert' และ 'package:http/http.dart' ครบถ้วน
+2. โครงสร้าง JSON: ชื่อฟิลด์ในคลาส AiProduct (id, title, price, description, category, image) ตรงกับ Key ใน JSON ต้นทางทั้งหมด
+3. การแปลง Data Type: ฟิลด์ price ใช้ (json['price'] as num).toDouble() ทำให้รองรับทั้งจำนวนเต็มและทศนิยม โดยไม่เกิด Type Cast Error
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="647" height="558" alt="image" src="https://github.com/user-attachments/assets/daaf8c14-0fae-4b9a-b550-58aa23f43efd" />
 
 ---
 
@@ -548,6 +585,8 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="497" height="107" alt="image" src="https://github.com/user-attachments/assets/f82aaf6d-5cf0-468b-bde8-dc9502f40695" />
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -569,13 +608,24 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
 ```text
-บันทึกคำตอบที่นี่
+1.การแปลงข้อมูล JSON: แพ็กเกจ http ต้องเรียกใช้งาน jsonDecode(response.body) เพื่อแปลงข้อความ JSON เป็น Map ด้วยตัวเอง ในขณะที่ dio ทำการแปลงข้อมูล JSON เป็น Map ให้อัตโนมัติผ่าน response.data ช่วยลดขั้นตอนการแปลงข้อมูล png  2.การส่ง Query Parameters: http ต้องต่อ String URL เองหรือใช้ Uri.https() ในการจัดพารามิเตอร์ ส่วน dio สามารถส่งเป็น Map เข้าทางพารามิเตอร์ queryParameters ได้โดยตรง อ่านเข้าใจง่ายและจัดการตัวแปรง่ายกว่า   3.การจัดการ Exception: http ต้องแยกดักจับ Exception หลายชนิด เช่น TimeoutException, ClientException และ FormatException ในขณะที่ dio รวบรวมข้อผิดพลาดทั้งหมดไว้ที่ DioException คลาสเดียว แล้วใช้ DioExceptionType ในการระบุสาเหตุข้อผิดพลาดได้อย่างชัดเจน
 ```
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
 ```text
-บันทึกคำตอบที่นี่
+} on DioException catch (e) {
+  if (e.type == DioExceptionType.connectionTimeout) {
+    throw Exception('การเชื่อมต่อหมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.badResponse) {
+    throw Exception('เซิร์ฟเวอร์ตอบกลับผิดพลาด (${e.response?.statusCode})');
+  } else if (e.type == DioExceptionType.receiveTimeout) {
+    throw Exception('การรับข้อมูลจากเซิร์ฟเวอร์นานเกินกำหนด');
+  } else if (e.type == DioExceptionType.connectionError) {
+    throw Exception('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
+  }
+  throw Exception('เกิดข้อผิดพลาด: ${e.message}');
+}
 ```
 ---
 
@@ -697,6 +747,7 @@ void main() {
 รันไฟล์นี้ด้วยวิธีเดียวกับขั้นตอนที่ 2.2 — กด **Run** ที่มุมขวาบนใน VS Code หรือรันจาก terminal ด้วยคำสั่ง `dart run lib/test_item_parse.dart`
 
 > ✅ **Checkpoint 7.1** ถ่ายภาพ Debug Console ที่ทดสอบ `Item.fromJson()` กับ JSON ตัวอย่างข้างต้นแล้ว print ค่าทั้ง 6 ฟิลด์ออกมาได้ถูกต้อง
+<img width="623" height="137" alt="image" src="https://github.com/user-attachments/assets/6f1d7951-6f59-490a-b7e5-c6f463b383ad" />
 
 ```text
 บันทึกรูปที่นี่
@@ -838,6 +889,7 @@ class _HomePageState extends State<HomePage> {
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="1290" height="972" alt="image" src="https://github.com/user-attachments/assets/1a3cb301-1fb5-4c70-87b7-581ff689eceb" />
 
 ---
 
