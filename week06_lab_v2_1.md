@@ -79,7 +79,11 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 ```text
 บันทึกรูปและคำตอบที่นี่
+
+
 ```
+<img width="807" height="295" alt="image" src="https://github.com/user-attachments/assets/185f9f6b-66ed-4cdf-8d85-2bd2dd6836bb" />
+
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
@@ -88,7 +92,14 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 ```text
 บันทึกรูปและคำตอบที่นี่
+กรณีที่เลือกทดสอบ: เลือกลบพารามิเตอร์ appid (API Key) ออกจาก URL เพื่อจำลองกรณีที่แอปพลิเคชันไม่ได้ส่งคีย์ยืนยันตัวตน
+
+คาดการณ์ Status Code: คาดว่าน่าจะได้ 401 Unauthorized เพราะเซิร์ฟเวอร์น่าจะปฏิเสธการให้ข้อมูลหากไม่สามารถระบุตัวตนหรือไม่มีสิทธิ์เข้าถึง
+
+Status Code จริงที่ได้: ได้ 401 Unauthorized และมีข้อความใน JSON ว่า "Invalid API key" ซึ่งตรงกับที่คาดการณ์ไว้
 ```
+<img width="791" height="276" alt="image" src="https://github.com/user-attachments/assets/b1dd14ec-0415-4dd8-acf4-0e5b512a06b8" />
+
 ---
 
 ## ส่วนที่ 2: สร้าง Model Class และเรียก API ด้วย http Package
@@ -185,6 +196,10 @@ void main() {
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="498" height="118" alt="image" src="https://github.com/user-attachments/assets/65df5b07-c1c6-4e1f-80e5-3d6051025b1c" />
+<img width="756" height="323" alt="image" src="https://github.com/user-attachments/assets/5c0fecf6-e887-4882-a552-a09ca28ca089" />
+<img width="614" height="320" alt="image" src="https://github.com/user-attachments/assets/a93f4acb-d2fa-4550-8694-279f716b8ecb" />
+
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
 สร้างไฟล์ `lib/services/weather_service.dart` แล้วเขียน `WeatherService` ต่อจากตัวอย่างโครงเริ่มต้นด้านล่างนี้  
@@ -235,6 +250,8 @@ class WeatherService {
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
+<img width="552" height="90" alt="image" src="https://github.com/user-attachments/assets/fae8afe9-4f77-45be-83cc-8d69246d6207" />
+
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -354,6 +371,13 @@ class MyApp extends StatelessWidget {
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="1055" height="390" alt="image" src="https://github.com/user-attachments/assets/80785e20-c69f-41d6-a95f-0728712a2e82" />
+<img width="1051" height="340" alt="image" src="https://github.com/user-attachments/assets/7ac49429-76c6-4a04-b237-7e837cb46d6d" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/af0e5f04-6744-48e9-b9b6-288e7eb0ab10" />
+
+
+
+
 
 ---
 
@@ -405,6 +429,8 @@ ElevatedButton(
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
+<img width="551" height="192" alt="image" src="https://github.com/user-attachments/assets/daf7dad4-e22b-47bd-80c0-7d267a916cb6" />
+
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -432,6 +458,8 @@ Future<void> updateDemoPost() async {
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
+<img width="565" height="412" alt="image" src="https://github.com/user-attachments/assets/c07899f7-a7fd-42ee-bded-4c282c0f4f7b" />
+
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
@@ -487,6 +515,10 @@ GET https://fakestoreapi.com/products
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="608" height="369" alt="image" src="https://github.com/user-attachments/assets/0a78d39f-c07e-4ba4-9183-1aacd8c4c418" />
+<img width="608" height="385" alt="image" src="https://github.com/user-attachments/assets/1cfe2136-7656-46b0-a489-70e595497bb1" />
+<img width="620" height="380" alt="image" src="https://github.com/user-attachments/assets/a3a8c5f1-0124-4f0c-b4c7-13b872346e7f" />
+
 
 ---
 
@@ -548,6 +580,8 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="284" height="96" alt="image" src="https://github.com/user-attachments/assets/0d00dda4-ee41-410a-b675-bf7ee2d156fa" />
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -570,12 +604,30 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 
 ```text
 บันทึกคำตอบที่นี่
+1.การแปลง JSON: dio จะแปลงข้อมูล JSON กลับมาเป็น Map ให้อัตโนมัติผ่าน response.data ทำให้ไม่ต้องเรียกใช้คำสั่ง jsonDecode() เองเหมือนตอนใช้แพ็กเกจ http
+
+2.การจัดการ Query Parameters: dio สามารถกำหนดพารามิเตอร์แบบ Map ลงใน queryParameters ได้โดยตรง ทำให้โค้ดอ่านง่ายและเป็นระเบียบกว่า http ที่ต้องนำตัวแปรไปต่อท้าย String URL เองให้ยืดยาว
+
+3.การจัดการ Exception (ข้อผิดพลาด): dio รวบรวม Error ไว้ใน DioException ตัวเดียว แล้วให้เราเช็คสาเหตุย่อยผ่าน e.type ทำให้จัดการโค้ดได้เป็นสัดส่วนกว่า http ที่ต้องดักจับ Exception แยกหลายชนิด (เช่น TimeoutException, ClientException)
 ```
+
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
 ```text
 บันทึกคำตอบที่นี่
+} on DioException catch (e) {
+  if (e.type == DioExceptionType.connectionTimeout) {
+    throw Exception('การเชื่อมต่อหมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.badResponse) {
+    throw Exception('เซิร์ฟเวอร์ตอบกลับผิดพลาด (${e.response?.statusCode})');
+  } else if (e.type == DioExceptionType.receiveTimeout) {
+    throw Exception('เซิร์ฟเวอร์ใช้เวลาตอบกลับนานเกินไป กรุณาลองใหม่');
+  } else if (e.type == DioExceptionType.connectionError) {
+    throw Exception('ไม่สามารถเชื่อมต่อเครือข่ายได้ ตรวจสอบอินเทอร์เน็ตของคุณ');
+  }
+  throw Exception('เกิดข้อผิดพลาด: ${e.message}');
+}
 ```
 ---
 
@@ -701,6 +753,8 @@ void main() {
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="485" height="119" alt="image" src="https://github.com/user-attachments/assets/9166c655-ad2c-4625-a31a-88d296394036" />
+
 ### ขั้นตอนที่ 7.3 — 🔧 ทำตาม (Interface) + 🧠 คิดเอง (Implementation)
 
 ในสัปดาห์ก่อนหน้า มีการเรียนหลักการ **Repository Pattern** ไปแล้วว่า Widget/ViewModel ไม่ควรรู้จักแหล่งข้อมูลโดยตรง (เช่น เรียก `http.get()` เองในไฟล์ UI) แต่ควรรู้จักผ่าน **Interface** เท่านั้น เพื่อให้สลับแหล่งข้อมูลได้โดยไม่ต้องแก้ Widget สัปดาห์นี้ Campus Marketplace มีแหล่งข้อมูลจริงให้ดึง (REST API) ซึ่งจะนำทฤษฎีเรื่อง Repository Pattern มาใช้งานจริง
@@ -838,6 +892,13 @@ class _HomePageState extends State<HomePage> {
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/42911081-38a3-437f-ab26-ee2149aa2a4c" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/3200518f-f580-4603-b6e4-3035406e7697" />
+<img width="1366" height="757" alt="image" src="https://github.com/user-attachments/assets/b1c99d80-b3dd-4abf-b089-d8b22c34614d" />
+<img width="1364" height="768" alt="image" src="https://github.com/user-attachments/assets/8c78d717-a37f-401c-8e3c-edd833f0225e" />
+
+
+
 
 ---
 
