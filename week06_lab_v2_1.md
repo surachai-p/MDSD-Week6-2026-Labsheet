@@ -422,8 +422,6 @@ class MyApp extends StatelessWidget {
 **(1)ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา**
 <img width="1050" height="802" alt="image" src="https://github.com/user-attachments/assets/528c510d-a96b-416a-901e-252a05fcacf3" />
 
-
-
 ---
 
 ## ส่วนที่ 3: ทดลองเรียก HTTP Method อื่นนอกเหนือจาก GET
@@ -471,9 +469,8 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="686" height="433" alt="image" src="https://github.com/user-attachments/assets/bc43edd2-d2ae-4c71-9bd7-eeb2379ae1a6" />
+
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -497,10 +494,8 @@ Future<void> updateDemoPost() async {
 ```
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
+<img width="942" height="782" alt="image" src="https://github.com/user-attachments/assets/3be20d74-026d-4dee-bbf9-e5bf6443e429" />
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
