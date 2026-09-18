@@ -77,18 +77,30 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
+<img width="947" height="558" alt="image" src="https://github.com/user-attachments/assets/f477ae60-dffd-47f4-808e-1ef2b2e28f96" />
+<img width="955" height="587" alt="image" src="https://github.com/user-attachments/assets/a073c96d-0465-4b95-a1fc-cbc9294f5910" />
+
 ```text
-บันทึกรูปและคำตอบที่นี่
+- ชื่อเมือง: name (ค่า: "กรุงเทพมหานคร")ชื่อเมือง: name (ค่า: "กรุงเทพมหานคร")
+- คำอธิบายสภาพอากาศ: weather[0].description (ค่า: "ฝนปานกลาง") หรือ weather[0].main (ค่า: "Rain")
+- ไอคอนสภาพอากาศ: weather[0].icon (ค่า: "10d")
+- อุณหภูมิปัจจุบัน: main.temp (ค่า: 30.51)
+- อุณหภูมิที่รู้สึกจริง (Feels Like): main.feels_like (ค่า: 37.51)
+- อุณหภูมิสูงสุด / ต่ำสุด: main.temp_max (31.64) และ main.temp_min (28.84)
+- ความชื้น: main.humidity (ค่า: 77)
+- ความเร็วลม: wind.speed (ค่า: 1.67)
 ```
+
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="953" height="671" alt="image" src="https://github.com/user-attachments/assets/986e42a8-436d-4e86-a600-f8cd2ccb3ff2" />
+
+Status Code 404 จัดอยู่ในช่วง 4xx (Client Error) ซึ่งเป็นกลุ่มรหัสข้อผิดพลาดที่เกิดจากฝั่งผู้ส่ง Request (Client) ตัวเลข 404 หมายถึงเซิร์ฟเวอร์ได้รับ Request แล้ว แต่ไม่พบทรัพยากร (Resource) ตามที่ร้องขอ ซึ่งในกรณีนี้คือระบบ OpenWeatherMap ไม่พบข้อมูลสภาพอากาศของชื่อเมือง Atlantis_9999 ในฐานข้อมูล จึงตอบกลับด้วยรหัส 404 Not Found
+
 ---
 
 ## ส่วนที่ 2: สร้าง Model Class และเรียก API ด้วย http Package
@@ -182,9 +194,13 @@ void main() {
 
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="245" height="73" alt="image" src="https://github.com/user-attachments/assets/67e35820-6214-41ad-8cdf-854a908e3175" />
+<img width="330" height="333" alt="image" src="https://github.com/user-attachments/assets/56eb6f94-4209-4a83-a8ae-6aa31cdadc24" />
+<img width="289" height="458" alt="image" src="https://github.com/user-attachments/assets/0864207f-89de-4c6e-a26b-f85ea20176f9" />
+
+
+
+
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
 สร้างไฟล์ `lib/services/weather_service.dart` แล้วเขียน `WeatherService` ต่อจากตัวอย่างโครงเริ่มต้นด้านล่างนี้  
@@ -232,9 +248,8 @@ class WeatherService {
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="599" height="211" alt="image" src="https://github.com/user-attachments/assets/b478e0d9-03b1-4fc8-8360-f823d14a03b9" />
+
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -351,9 +366,11 @@ class MyApp extends StatelessWidget {
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="1026" height="353" alt="Liverpool" src="https://github.com/user-attachments/assets/f550950b-94fb-4d5f-97a4-74c3e6ec17d3" />
+
+<img width="1026" height="350" alt="barbie" src="https://github.com/user-attachments/assets/b1f690da-3ff2-42ce-95a3-9a691820a515" />
+
+<img width="1024" height="349" alt="no internet" src="https://github.com/user-attachments/assets/03661a55-9fac-4db1-a197-6499ab5fb3c2" />
 
 ---
 
@@ -402,9 +419,9 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+
+<img width="350" height="131" alt="image" src="https://github.com/user-attachments/assets/a724d654-a4dc-4888-93eb-1602f0774e21" />
+
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -429,9 +446,8 @@ Future<void> updateDemoPost() async {
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="387" height="166" alt="image" src="https://github.com/user-attachments/assets/bdbda6cf-ceee-454d-8eed-7342ba3e1e24" />
+
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
@@ -484,9 +500,8 @@ GET https://fakestoreapi.com/products
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
-```text
-บันทึกรูปที่นี่
-```
+<img width="766" height="377" alt="image" src="https://github.com/user-attachments/assets/e141f434-27f1-4106-a1f6-ca932f3fe028" />
+
 
 ---
 
@@ -545,9 +560,8 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
-```text
-บันทึกรูปที่นี่
-```
+<img width="398" height="109" alt="image" src="https://github.com/user-attachments/assets/5cb24da0-6958-4ac0-ac4b-a6c6223ce295" />
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -569,13 +583,29 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
 ```text
-บันทึกคำตอบที่นี่
+- 1. การแปลง JSONต้องเรียกใช้ jsonDecode(response.body) เพื่อแปลงข้อมูลเป็น Map หรือ List ด้วยตนเอง   แปลงข้อมูล JSON เป็น Map หรือ List ให้อัตโนมัติ เข้าถึงผ่าน response.data ได้ทันที   
+- 2. การส่ง Query Parameters	ต้องนำข้อความมาต่อใน URL เอง หรือสร้างผ่านวัตถุ กำหนดผ่านพารามิเตอร์ queryParameters: {...} ในรูปแบบ Map ได้โดยตรง สะดวกและลดข้อผิดพลาด
+- 3. การจัดการ Exception	ต้องแยกดักจับตามคลาสที่เกิดขึ้นต่างกัน เช่น TimeoutException, http.ClientException, FormatException รวมข้อผิดพลาดเกี่ยวกับเครือข่ายทั้งหมดไว้ในคลาส DioException เดียว แล้วแยกแยะสาเหตุผ่าน e.type
 ```
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
 ```text
-บันทึกคำตอบที่นี่
+} on DioException catch (e) {
+  if (e.type == DioExceptionType.connectionTimeout) {
+    throw Exception('การเชื่อมต่อหมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.badResponse) {
+    throw Exception('เซิร์ฟเวอร์ตอบกลับผิดพลาด (${e.response?.statusCode})');
+  } else if (e.type == DioExceptionType.receiveTimeout) {
+    // เพิ่มกรณีรับข้อมูลช้าเกินกำหนด
+    throw Exception('การรับข้อมูลจากเซิร์ฟเวอร์หมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.connectionError) {
+    // เพิ่มกรณีไม่มีอินเทอร์เน็ต หรือเชื่อมต่อเซิร์ฟเวอร์ไม่ได้
+    throw Exception('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
+  } else {
+    throw Exception('เกิดข้อผิดพลาด: ${e.message}');
+  }
+}
 ```
 ---
 
@@ -698,9 +728,9 @@ void main() {
 
 > ✅ **Checkpoint 7.1** ถ่ายภาพ Debug Console ที่ทดสอบ `Item.fromJson()` กับ JSON ตัวอย่างข้างต้นแล้ว print ค่าทั้ง 6 ฟิลด์ออกมาได้ถูกต้อง
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="601" height="266" alt="image" src="https://github.com/user-attachments/assets/2c668436-ce30-44e7-8e54-b9055d182dfe" />
+
+
 ### ขั้นตอนที่ 7.3 — 🔧 ทำตาม (Interface) + 🧠 คิดเอง (Implementation)
 
 ในสัปดาห์ก่อนหน้า มีการเรียนหลักการ **Repository Pattern** ไปแล้วว่า Widget/ViewModel ไม่ควรรู้จักแหล่งข้อมูลโดยตรง (เช่น เรียก `http.get()` เองในไฟล์ UI) แต่ควรรู้จักผ่าน **Interface** เท่านั้น เพื่อให้สลับแหล่งข้อมูลได้โดยไม่ต้องแก้ Widget สัปดาห์นี้ Campus Marketplace มีแหล่งข้อมูลจริงให้ดึง (REST API) ซึ่งจะนำทฤษฎีเรื่อง Repository Pattern มาใช้งานจริง
@@ -835,9 +865,11 @@ class _HomePageState extends State<HomePage> {
 
 > ✅ **Checkpoint 7.3** รันแอปแล้วถ่ายภาพหน้าจอ Home ที่แสดงรายการสินค้าจริงจาก Fake Store API ผ่าน `ItemRepositoryApi` (ไม่ใช่ข้อมูล mock up) พร้อมภาพโครงสร้างไฟล์ที่แสดงให้เห็นว่ามีทั้ง `item_repository.dart` (Interface) และ `item_repository_api.dart` (Impl) แยกกันชัดเจน และทดสอบว่าปุ่ม "เพิ่มลงตะกร้า" กับการกดไปหน้า `CheckoutPage` จากสัปดาห์ที่ 5 ยังทำงานได้ปกติกับข้อมูล `Item` ชุดใหม่นี้ 
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="1301" height="768" alt="78" src="https://github.com/user-attachments/assets/eaf434ae-5543-4bf8-bf7c-4a44dd7745f0" />
+<img width="1304" height="768" alt="987" src="https://github.com/user-attachments/assets/6bcc3c5b-dd0f-4b2f-bd8c-0a2d6e783a2f" />
+<img width="1299" height="768" alt="99" src="https://github.com/user-attachments/assets/1a0f9541-f74d-4ade-a061-63900148a3ba" />
+
+
 
 ---
 
