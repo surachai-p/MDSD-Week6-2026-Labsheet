@@ -1,10 +1,11 @@
-# ใบงานปฏิบัติบทที่ 6 API Integration & Networking ด้วย http Package
+# ใบงานปฏิบัติบทที่ 6: API Integration & Networking ด้วย http Package
 
-**วิชา** การพัฒนาซอฟต์แวร์สำหรับอุปกรณ์เคลื่อนที่ | **เครื่องมือ** Flutter, http package, Postman, Google AI Studio (Gemini API), OpenWeather API
+**วิชา:** การพัฒนาซอฟต์แวร์สำหรับอุปกรณ์เคลื่อนที่
+**เครื่องมือ:** Flutter, http package, Postman, Google AI Studio (Gemini API), OpenWeather API
 
 ---
 
-## วัตถุประสงค์การเรียนรู้
+## 🎯 วัตถุประสงค์การเรียนรู้
 
 เมื่อทำใบงานนี้เสร็จสิ้น ผู้เรียนจะสามารถ
 
@@ -14,23 +15,33 @@
 4. ทดสอบ API ด้วย Postman ก่อนนำไปเขียนโค้ดจริง เพื่อยืนยันโครงสร้างข้อมูลที่ได้รับ
 5. ใช้ Google AI Studio (Gemini) ช่วย generate โค้ด API Client และประเมินความถูกต้องของโค้ดที่ได้ด้วยตนเอง
 
+---
 
-## สิ่งที่ต้องเตรียมก่อนเริ่ม
+## 🧰 สิ่งที่ต้องเตรียมก่อนเริ่ม
 
-- ติดตั้ง Flutter SDK และ VS Code 
+- ติดตั้ง Flutter SDK และ VS Code
 - โปรเจกต์ Flutter ใหม่ชื่อ `week6_api_lab` (สร้างด้วยคำสั่ง `flutter create week6_api_lab`)
-- บัญชี Google AI Studio 
-- สมัครบัญชี OpenWeather API แบบฟรีที่ https://openweathermap.org/api เพื่อรับ API Key ส่วนตัว **(หมายเหตุ: API Key ที่สมัครใหม่อาจใช้เวลาประมาณ 10-30 นาทีกว่าจะเริ่มใช้งานได้จริง ให้สมัครล่วงหน้าก่อนเริ่มทำใบงาน)**
+- บัญชี Google AI Studio
+- สมัครบัญชี OpenWeather API แบบฟรีที่ https://openweathermap.org/api เพื่อรับ API Key ส่วนตัว
+  > **หมายเหตุ:** API Key ที่สมัครใหม่อาจใช้เวลาประมาณ 10–30 นาทีกว่าจะเริ่มใช้งานได้จริง ให้สมัครล่วงหน้าก่อนเริ่มทำใบงาน
 - ติดตั้งโปรแกรม Postman (Desktop App หรือใช้งานผ่านเว็บที่ https://www.postman.com)
 
-⚠️ **ข้อควรระวังเรื่องความปลอดภัย**: ห้าม commit API Key ของตัวเองขึ้น GitHub หรือแนบส่งในรายงานสาธารณะเด็ดขาด ให้เก็บ API Key ไว้ในไฟล์ที่ไม่ถูก track (เช่นใช้ตัวแปรใน `--dart-define` หรือไฟล์ `.env` ที่เพิ่มใน `.gitignore`) หากทำใบงานนี้ส่งอาจารย์ ให้แทนที่ Key จริงด้วยข้อความ `YOUR_API_KEY` ในภาพหน้าจอที่แนบส่ง
+> ⚠️ **ข้อควรระวังเรื่องความปลอดภัย**
+> ห้าม commit API Key ของตัวเองขึ้น GitHub หรือแนบส่งในรายงานสาธารณะเด็ดขาด ให้เก็บ API Key ไว้ในไฟล์ที่ไม่ถูก track (เช่นใช้ตัวแปรใน `--dart-define` หรือไฟล์ `.env` ที่เพิ่มใน `.gitignore`) หากทำใบงานนี้ส่งอาจารย์ ให้แทนที่ Key จริงด้วยข้อความ `YOUR_API_KEY` ในภาพหน้าจอที่แนบส่ง
 
 ---
 
-## ทฤษฎีที่จำเป็นก่อนการทดลอง
-### เครือข่ายและ REST API 
+## 📖 ทฤษฎีที่จำเป็นก่อนการทดลอง
 
-แอปที่จะสร้างในใบงานนี้เป็น **Client** ที่ต้องคุยกับ **เซิร์ฟเวอร์ (Server)** ผ่านโปรโตคอล HTTP โดยยึดหลัก REST คือมอง "สภาพอากาศของเมืองหนึ่ง" หรือ "สินค้าชิ้นหนึ่ง" เป็น **Resource** ที่มี URL เฉพาะของตัวเอง การกระทำกับ Resource นั้นบอกผ่าน **HTTP Method**: `GET` ใช้ขอข้อมูลโดยไม่เปลี่ยนแปลงอะไรบนเซิร์ฟเวอร์ , `POST` ใช้สร้างข้อมูลใหม่ , และ `PUT` ใช้แก้ไขข้อมูลที่มีอยู่แล้วทั้งก้อน  ทุกครั้งที่เซิร์ฟเวอร์ตอบกลับจะแนบ **Status Code** 3 หลักมาด้วยเสมอ ตัวเลขที่จะเจอบ่อยในใบงานนี้คือ `200` (สำเร็จ), `201` (สร้างข้อมูลใหม่สำเร็จ), `404` (ไม่พบ Resource ที่ขอ) และ `500` (เซิร์ฟเวอร์มีปัญหาภายใน)
+### เครือข่ายและ REST API
+
+แอปที่จะสร้างในใบงานนี้เป็น **Client** ที่ต้องคุยกับ **เซิร์ฟเวอร์ (Server)** ผ่านโปรโตคอล HTTP โดยยึดหลัก REST คือมอง "สภาพอากาศของเมืองหนึ่ง" หรือ "สินค้าชิ้นหนึ่ง" เป็น **Resource** ที่มี URL เฉพาะของตัวเอง การกระทำกับ Resource นั้นบอกผ่าน **HTTP Method**:
+
+- `GET` ใช้ขอข้อมูลโดยไม่เปลี่ยนแปลงอะไรบนเซิร์ฟเวอร์
+- `POST` ใช้สร้างข้อมูลใหม่
+- `PUT` ใช้แก้ไขข้อมูลที่มีอยู่แล้วทั้งก้อน
+
+ทุกครั้งที่เซิร์ฟเวอร์ตอบกลับจะแนบ **Status Code** 3 หลักมาด้วยเสมอ ตัวเลขที่จะเจอบ่อยในใบงานนี้คือ `200` (สำเร็จ), `201` (สร้างข้อมูลใหม่สำเร็จ), `404` (ไม่พบ Resource ที่ขอ) และ `500` (เซิร์ฟเวอร์มีปัญหาภายใน)
 
 ### Asynchronous Programming: Future, async และ await
 
@@ -40,11 +51,17 @@
 
 ข้อมูลที่ได้จากเซิร์ฟเวอร์มาเป็น **String** ข้อความดิบ ต้องแปลงผ่าน `jsonDecode()` ก่อนใช้งาน แล้วดึงค่าจาก `Map<String, dynamic>` ไปสร้างเป็น Model Class ผ่าน `factory Weather.fromJson(...)` เพื่อความปลอดภัยด้านชนิดข้อมูล ตัวเลขทุกตัวต้อง cast ผ่าน `num` ก่อนแล้วค่อยเรียก `.toDouble()` เสมอ เพราะ JSON ไม่แยก int กับ double เคร่งครัดเหมือน Dart
 
- JSON จริงที่ได้จาก OpenWeather API  มีโครงสร้างซ้อนกัน 2 ชั้น ไม่ใช่ระดับเดียวเหมือนตัวอย่าง `weather.json` ในบทเรียน — อุณหภูมิอยู่ใน object ย่อยชื่อ `main` (เช่น `json['main']['temp']`) และคำอธิบายสภาพอากาศอยู่ใน `weather` ซึ่งเป็น **List** ไม่ใช่ Object เดี่ยว (ต้อง cast เป็น `List<dynamic>` แล้วดึงสมาชิกตัวแรกออกมาก่อนจึงจะเข้าถึง `description` ได้) จุดนี้คือสิ่งที่ทำให้การ parse JSON ในโลกจริงยากกว่าตัวอย่างในห้องเรียนเล็กน้อยเสมอ ให้สังเกตโครงสร้างนี้ให้ดีตอนทดสอบด้วย Postman ในส่วนที่ 1 ก่อนลงมือเขียน Model Class ในส่วนที่ 2
+JSON จริงที่ได้จาก OpenWeather API มีโครงสร้างซ้อนกัน 2 ชั้น ไม่ใช่ระดับเดียวเหมือนตัวอย่าง `weather.json` ในบทเรียน — อุณหภูมิอยู่ใน object ย่อยชื่อ `main` (เช่น `json['main']['temp']`) และคำอธิบายสภาพอากาศอยู่ใน `weather` ซึ่งเป็น **List** ไม่ใช่ Object เดี่ยว (ต้อง cast เป็น `List<dynamic>` แล้วดึงสมาชิกตัวแรกออกมาก่อนจึงจะเข้าถึง `description` ได้) จุดนี้คือสิ่งที่ทำให้การ parse JSON ในโลกจริงยากกว่าตัวอย่างในห้องเรียนเล็กน้อยเสมอ ให้สังเกตโครงสร้างนี้ให้ดีตอนทดสอบด้วย Postman ในส่วนที่ 1 ก่อนลงมือเขียน Model Class ในส่วนที่ 2
 
 ### การจัดการข้อผิดพลาด
 
-การเรียก API ที่ดีต้องครอบด้วย `try-catch` และตั้ง `.timeout()` เสมอ เพื่อไม่ให้แอปแบบไม่มีที่สิ้นสุดเมื่อสัญญาณอินเทอร์เน็ตมีปัญหา ข้อผิดพลาดที่พบบ่อยและใบงานนี้จะให้ฝึกดักจับคือ `TimeoutException` (รอเกินเวลาที่กำหนด), `http.ClientException` (เชื่อมต่อเซิร์ฟเวอร์ไม่ได้เลย เช่น ไม่มีอินเทอร์เน็ต) และ `FormatException` (ข้อมูลที่ได้กลับมาไม่ใช่ JSON ที่ถูกต้อง) โดยหลักการคือต้องแปลง error จากระบบให้เป็นข้อความภาษาไทยที่ผู้ใช้อ่านเข้าใจได้เสมอ ไม่ใช่โยน error message ขึ้นหน้าจอตรง ๆ
+การเรียก API ที่ดีต้องครอบด้วย `try-catch` และตั้ง `.timeout()` เสมอ เพื่อไม่ให้แอปค้างไม่มีที่สิ้นสุดเมื่อสัญญาณอินเทอร์เน็ตมีปัญหา ข้อผิดพลาดที่พบบ่อยและใบงานนี้จะให้ฝึกดักจับคือ:
+
+- `TimeoutException` — รอเกินเวลาที่กำหนด
+- `http.ClientException` — เชื่อมต่อเซิร์ฟเวอร์ไม่ได้เลย เช่น ไม่มีอินเทอร์เน็ต
+- `FormatException` — ข้อมูลที่ได้กลับมาไม่ใช่ JSON ที่ถูกต้อง
+
+โดยหลักการคือต้องแปลง error จากระบบให้เป็นข้อความภาษาไทยที่ผู้ใช้อ่านเข้าใจได้เสมอ ไม่ใช่โยน error message ขึ้นหน้าจอตรง ๆ
 
 ### Repository Pattern
 
@@ -53,7 +70,7 @@
 ### เครื่องมือและ API ที่ใช้จริงในใบงานนี้
 
 - **Postman** คือโปรแกรมสำหรับยิง HTTP Request ทดสอบโดยไม่ต้องเขียนโค้ด ใช้ยืนยันว่า Endpoint ทำงานถูกต้องและดูโครงสร้าง JSON จริงก่อนเขียนโค้ด Flutter เสมอ (หลักปฏิบัติมาตรฐานของนักพัฒนามืออาชีพ)
-- **OpenWeather API** (`api.openweathermap.org`) คือ Public REST API ให้ข้อมูลสภาพอากาศจริง ใช้ในส่วนที่ 1-2 ของใบงานนี้ ต้องสมัครรับ API Key ฟรีก่อนใช้งาน
+- **OpenWeather API** (`api.openweathermap.org`) คือ Public REST API ให้ข้อมูลสภาพอากาศจริง ใช้ในส่วนที่ 1–2 ของใบงานนี้ ต้องสมัครรับ API Key ฟรีก่อนใช้งาน
 - **JSONPlaceholder** (`jsonplaceholder.typicode.com`) คือ Fake REST API ฟรีที่สร้างไว้ให้นักพัฒนาทดสอบ POST/PUT/DELETE โดยไม่มีฐานข้อมูลจริงอยู่เบื้องหลัง (ข้อมูลที่ส่งไปจะไม่ถูกบันทึกจริง แต่เซิร์ฟเวอร์จะ "แสร้ง" ตอบกลับเหมือนบันทึกสำเร็จ) ใช้ฝึก HTTP Method อื่นนอกจาก GET ในส่วนที่ 3
 - **Fake Store API** (`fakestoreapi.com`) คือ Public API ฟรีอีกตัวที่จำลองข้อมูลร้านค้า/สินค้า ใช้เป็นแหล่งข้อมูลของโปรเจกต์หลัก Campus Marketplace ในส่วนที่ 7 ก่อนที่จะย้ายไปใช้ Firebase จริงในสัปดาห์ถัดไป
 - **Google AI Studio / Gemini API** ใช้ในส่วนที่ 4 เป็นผู้ช่วยร่าง (generate) โค้ด API Client เบื้องต้น แต่ผู้เรียนยังต้องตรวจสอบความถูกต้องด้วยตนเองเสมอ (ดูคำเตือนท้ายส่วนที่ 4)
@@ -75,20 +92,20 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 กด **Send** แล้วสังเกตผลลัพธ์สองส่วนคือ **Status Code** ที่แสดงมุมขวาบน และ **Response Body** ที่เป็น JSON ด้านล่าง
 
-> ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
+> ✅ **Checkpoint 1.1**
+> ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="1479" height="769" alt="image" src="https://github.com/user-attachments/assets/8795d1ff-23a6-474e-a6b1-205f1f9af411" />
+
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
-ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
+ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ก่อนว่า** นักศึกษาคิดว่า Status Code จะเป็นอะไร แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
 
-> ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
+> ✅ **Checkpoint 1.2**
+> บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="1488" height="275" alt="image" src="https://github.com/user-attachments/assets/7442b49f-88b2-4aad-98ce-95ede192c822" />
+
 ---
 
 ## ส่วนที่ 2: สร้าง Model Class และเรียก API ด้วย http Package
@@ -143,13 +160,14 @@ class Weather {
 }
 ```
 
-**สิ่งที่ต้องสังเกตจาก JSON จริง (ไม่เหมือนตัวอย่าง Flat JSON ในบทเรียนหัวข้อ 6.5):** อุณหภูมิและ feels-like ไม่ได้อยู่ที่ระดับบนสุดของ JSON แต่ซ้อนอยู่ใน object ย่อยชื่อ `main` ส่วนคำอธิบายสภาพอากาศอยู่ใน `weather` ซึ่งเป็น **List** ไม่ใช่ Object เดี่ยว (ต้องดึงสมาชิกตัวแรกออกมาก่อน)
+**สิ่งที่ต้องสังเกตจาก JSON จริง (ไม่เหมือนตัวอย่าง Flat JSON ในบทเรียนหัวข้อ 6.5):**
+อุณหภูมิและ feels-like ไม่ได้อยู่ที่ระดับบนสุดของ JSON แต่ซ้อนอยู่ใน object ย่อยชื่อ `main` ส่วนคำอธิบายสภาพอากาศอยู่ใน `weather` ซึ่งเป็น **List** ไม่ใช่ Object เดี่ยว (ต้องดึงสมาชิกตัวแรกออกมาก่อน)
 
 เกณฑ์ที่ `fromJson` ของนักศึกษาที่ต้องทำให้ครบ
 
 - cast `json['main']` เป็น `Map<String, dynamic>` ก่อนดึง `temp` และ `feels_like`
 - cast `json['weather']` เป็น `List<dynamic>` แล้วดึงสมาชิกตัวแรกออกมาเป็น `Map<String, dynamic>` ก่อนดึง `description`
-- ตัวเลขทุกตัวต้อง cast ผ่าน `num` แล้วเรียก `.toDouble()` เสมอ 
+- ตัวเลขทุกตัวต้อง cast ผ่าน `num` แล้วเรียก `.toDouble()` เสมอ
 - `cityName` ดึงจาก key `name` ที่ระดับบนสุดของ JSON
 
 **ก่อนถึง Checkpoint ด้านล่าง ให้สร้างไฟล์ใหม่แยกต่างหาก** เช่น `lib/test_weather_parse.dart` (ไม่ต้องปนกับ `main.dart` หลักของแอป) แล้วเขียนโค้ดทดสอบตามตัวอย่างด้านล่าง โดยแทนที่ `rawJson` ด้วย Response Body จริงที่คัดลอกมาจาก Postman ในขั้นตอนที่ 1.1
@@ -180,14 +198,14 @@ void main() {
 
 รันไฟล์นี้แยกจากแอปหลัก — ใน VS Code เปิดไฟล์นี้แล้วกด **Run** ที่มุมขวาบน (หรือคลิกขวา > Run) หรือรันจาก terminal ด้วยคำสั่ง `dart run lib/test_weather_parse.dart` เพราะไฟล์นี้มี `main()` ของตัวเอง จึงรันแยกจากแอป Flutter หลักได้ทันทีโดยไม่ต้องเปิดโปรแกรมทั้งแอป
 
-> ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
+> ✅ **Checkpoint 2.1**
+> รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="774" height="188" alt="image" src="https://github.com/user-attachments/assets/8af7fc7e-fb78-4046-9d4e-20a4c60d5cbe" />
+
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
-สร้างไฟล์ `lib/services/weather_service.dart` แล้วเขียน `WeatherService` ต่อจากตัวอย่างโครงเริ่มต้นด้านล่างนี้  
+สร้างไฟล์ `lib/services/weather_service.dart` แล้วเขียน `WeatherService` ต่อจากตัวอย่างโครงเริ่มต้นด้านล่างนี้
 
 ```dart
 import 'dart:async';
@@ -218,23 +236,22 @@ class WeatherService {
     } on http.ClientException {
       // ตัวอย่าง: ดักจับกรณีเชื่อมต่อเซิร์ฟเวอร์ไม่ได้เลย (เช่น ไม่มีอินเทอร์เน็ต)
       throw Exception('ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบการเชื่อมต่อ');
-    } 
-       // TODO: เพิ่มการดักจับ FormatException แยกต่างหาก (on FormatException) สำหรับกรณี JSON ผิดรูปแบบ
-      // แล้ว throw Exception ข้อความภาษาไทยที่อ่านเข้าใจง่าย   
+    }
+    // TODO: เพิ่มการดักจับ FormatException แยกต่างหาก (on FormatException) สำหรับกรณี JSON ผิดรูปแบบ
+    // แล้ว throw Exception ข้อความภาษาไทยที่อ่านเข้าใจง่าย
     catch (e) {
-
       rethrow;
     }
   }
 }
 ```
 
+> ✅ **Checkpoint 2.2**
+> บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
-> ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
-
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="737" height="162" alt="image" src="https://github.com/user-attachments/assets/ec822028-d332-4448-9c70-99b4c8211dbf" />
+<img width="1535" height="922" alt="image" src="https://github.com/user-attachments/assets/ff152ad9-b636-4e46-8425-33a4f1441385" />
+<img width="1543" height="604" alt="image" src="https://github.com/user-attachments/assets/cefd5d08-6569-420e-9e48-2f1e9037342d" />
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -272,7 +289,7 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
     setState(() => _status = _ViewStatus.loading);
 
     try {
-      // ตัวอย่าง: เรียก service แล้วจัดการกรณีสำเร็จ 
+      // ตัวอย่าง: เรียก service แล้วจัดการกรณีสำเร็จ
       final weather = await _weatherService.fetchWeather(_cityController.text);
       setState(() {
         _weather = weather;
@@ -282,7 +299,6 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
       // TODO (จุดที่ 1): โค้ดตรงนี้ยังไม่สมบูรณ์ — ให้เพิ่ม setState จัดการกรณีเมื่อค้นหาแล้วเกิด error ให้แอปเปลี่ยนการแสดงผลจาก loading เป็นการแจ้ง error
       // 1. _status = _ViewStatus.error
       // 2. _errorMessage = ข้อความอ่านง่าย (เช่น e.toString())
-   
     }
   }
 
@@ -305,10 +321,10 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
               child: const Text('ค้นหา'),
             ),
             const SizedBox(height: 16),
-            // ตัวอย่าง: สถานะกำลังโหลด 
+            // ตัวอย่าง: สถานะกำลังโหลด
             if (_status == _ViewStatus.loading)
               const Center(child: CircularProgressIndicator()),
-            // ตัวอย่าง: สถานะสำเร็จ แสดงครบทั้งชื่อเมือง อุณหภูมิ และคำอธิบาย 
+            // ตัวอย่าง: สถานะสำเร็จ แสดงครบทั้งชื่อเมือง อุณหภูมิ และคำอธิบาย
             if (_status == _ViewStatus.success && _weather != null) ...[
               Text(
                 '${_weather!.cityName}: ${_weather!.temperature}°C',
@@ -316,9 +332,8 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
               ),
               Text(_weather!.description),
             ],
-            // TODO (จุดที่ 2): ยังไม่มี UI สำหรับสถานะ error — เพิ่มเงื่อนไข เพื่อตรวจสอบสถานะ กรณี error 
+            // TODO (จุดที่ 2): ยังไม่มี UI สำหรับสถานะ error — เพิ่มเงื่อนไข เพื่อตรวจสอบสถานะ กรณี error
             // ดูตัวอย่างวิธีการตรวจสอบสถานะ และการแสดงข้อความจากด้านบน โดยให้แสดงตัวหนังสือสีแดง
-
           ],
         ),
       ),
@@ -349,11 +364,12 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-> ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
+> ✅ **Checkpoint 2.3**
+> รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/480c6810-eabc-4010-b659-6ebc4a561f69" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6950f7cb-7635-45a1-8ea7-58e59eb24d94" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/3e7ba863-413d-4b5f-93ea-9ab5f5a96458" />
 
 ---
 
@@ -401,14 +417,14 @@ ElevatedButton(
 
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
-> ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+> ✅ **Checkpoint 3.1**
+> ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body
+
+<img width="325" height="181" alt="image" src="https://github.com/user-attachments/assets/2e6e0adf-fb1c-49e9-9321-22c8fcddc39b" />
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
-เขียนฟังก์ชัน `updateDemoPost()` เพิ่มเติมด้วยตัวเอง โดยใช้ `createDemoPost()` ในขั้นตอนที่ 3.1 เป็นต้นแบบโครงสร้าง แต่เปลี่ยนให้เรียก HTTP Method **PUT** ไปยัง `https://jsonplaceholder.typicode.com/posts/1` พร้อม body ที่คุณกำหนดเนื้อหาให้มีชื่อนักศึกษา  โครงเริ่มต้นด้านล่างให้เฉพาะชื่อฟังก์ชันและ `Uri` เป็นตัวอย่าง ส่วนการเรียก `http.put()` พร้อม body และการ print ผลลัพธ์ให้เขียนต่อเอง
+เขียนฟังก์ชัน `updateDemoPost()` เพิ่มเติมด้วยตัวเอง โดยใช้ `createDemoPost()` ในขั้นตอนที่ 3.1 เป็นต้นแบบโครงสร้าง แต่เปลี่ยนให้เรียก HTTP Method **PUT** ไปยัง `https://jsonplaceholder.typicode.com/posts/1` พร้อม body ที่คุณกำหนดเนื้อหาให้มีชื่อนักศึกษา โครงเริ่มต้นด้านล่างให้เฉพาะชื่อฟังก์ชันและ `Uri` เป็นตัวอย่าง ส่วนการเรียก `http.put()` พร้อม body และการ print ผลลัพธ์ให้เขียนต่อเอง
 
 ```dart
 Future<void> updateDemoPost() async {
@@ -427,14 +443,15 @@ Future<void> updateDemoPost() async {
 }
 ```
 
-> ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
+> ✅ **Checkpoint 3.2**
+> ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`)
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="518" height="162" alt="image" src="https://github.com/user-attachments/assets/613d0860-0b25-45ef-af8f-5d042f355b53" />
+
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
+
 ### ขั้นตอนที่ 4.1 — 🔧 ทำตามขั้นตอน
 
 เปิด Google AI Studio (https://aistudio.google.com) แล้วส่ง prompt แรกนี้ให้ Gemini — สังเกตว่า prompt นี้ระบุ API จริงที่ใช้ทดสอบได้ทันที (ไม่ใช่ API สมมติ) และระบุหลักการเขียนโค้ดที่สอดคล้องกับแบบแผนที่ใช้ตลอดทั้งใบงานนี้ (timeout, การดักจับ error 3 ชนิด, ข้อความภาษาไทย) เพื่อให้ได้โค้ดที่ใกล้เคียงมาตรฐานของใบงานมากที่สุดตั้งแต่รอบแรก
@@ -477,16 +494,17 @@ GET https://fakestoreapi.com/products
 - **แบบที่ 1**: เขียนไฟล์ทดสอบแยก เช่น `lib/test_ai_product.dart` แบบเดียวกับ Checkpoint 2.1 แต่เปลี่ยนจากการ parse JSON string คงที่ เป็นเรียก `await fetchAiProducts()` จริง แล้ว `print()` รายการสินค้าที่ได้ทั้งหมดออกมา
 - **แบบที่ 2**: เพิ่มปุ่มทดลองในหน้า `WeatherSearchPage` แบบเดียวกับขั้นตอนที่ 3.1 โดยเรียก `fetchAiProducts()` แล้ว `print()` ผลลัพธ์ใน Debug Console
 
-ไม่ว่าจะเลือกแบบไหน เป้าหมายคือต้องเห็น **ผลลัพธ์จริงจาก Fake Store API** ปรากฏขึ้นมา  ถ้ารันแล้วเจอ error หรือโค้ดจาก Gemini ผิดพลาด (เช่น import ขาด, ชื่อ field ไม่ตรงกับ JSON จริง) ให้จดบันทึกข้อความ error และวิธีแก้ไขไว้ในด้านล่าง
+ไม่ว่าจะเลือกแบบไหน เป้าหมายคือต้องเห็น **ผลลัพธ์จริงจาก Fake Store API** ปรากฏขึ้นมา ถ้ารันแล้วเจอ error หรือโค้ดจาก Gemini ผิดพลาด (เช่น import ขาด, ชื่อ field ไม่ตรงกับ JSON จริง) ให้จดบันทึกข้อความ error และวิธีแก้ไขไว้ในด้านล่าง
 
 ```text
 บันทึก error และการแก้ไขที่นี่
+โค้ดเริ่มต้นที่ AI สร้างให้ลืมใส่ import 'dart:async'; ทำให้เกิด Error แจ้งเตือนว่าไม่รู้จักคำสั่ง TimeoutException และในส่วนของการ map ข้อมูล JSON AI บางครั้งไม่ได้ทำ List cast ที่เหมาะสม จึงได้แก้ไขโดยการเพิ่ม import 'dart:async'; ไว้ด้านบน และจัดการโค้ดส่วนแปลงข้อมูลให้เป็น final List<dynamic> data = jsonDecode(response.body); เพื่อให้ data.map() ทำงานได้อย่างถูกต้องและไม่มี Error
 ```
 
-> ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
-```text
-บันทึกรูปที่นี่
-```
+> ✅ **Checkpoint 4.2**
+> ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา)
+
+<img width="711" height="778" alt="image" src="https://github.com/user-attachments/assets/6a0b8903-b95f-4ce9-a635-20fc5fef3e1b" />
 
 ---
 
@@ -541,13 +559,15 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 - **แบบที่ 2**: เพิ่มปุ่มทดลองในหน้า `WeatherSearchPage` แบบเดียวกับขั้นตอนที่ 3.1 โดยเรียก `fetchWeatherWithDio(_cityController.text)` แล้ว `print()` ผลลัพธ์ใน Debug Console
 
 ระหว่างทดลอง ให้สังเกต 2 จุดนี้เป็นพิเศษ
-1. ไม่ต้องเรียก `jsonDecode()` เองเหมือนตอนใช้ `http` เพราะ `dio` แปลง JSON ให้เป็น `Map` อัตโนมัติผ่าน `response.data`
-2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
-> ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
-```text
-บันทึกรูปที่นี่
-```
+1. ไม่ต้องเรียก `jsonDecode()` เองเหมือนตอนใช้ `http` เพราะ `dio` แปลง JSON ให้เป็น `Map` อัตโนมัติผ่าน `response.data`
+2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3)
+
+> ✅ **Checkpoint 5.1**
+> ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
+
+<img width="731" height="142" alt="image" src="https://github.com/user-attachments/assets/1732883e-4a59-4f7f-b09f-eb19718028b7" />
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -561,47 +581,70 @@ Future<Weather> fetchWeatherWithDio(String city) async {
     throw Exception('เซิร์ฟเวอร์ตอบกลับผิดพลาด (${e.response?.statusCode})');
   }
   // TODO: เพิ่มการจัดการ กรณี DioExceptionType.receiveTimeout และ DioExceptionType.connectionError พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้น
-  
+
   throw Exception('เกิดข้อผิดพลาด: ${e.message}');
 }
 ```
 
-> ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
+> ✅ **Checkpoint 5.2**
+> เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
 ```text
-บันทึกคำตอบที่นี่
+1. การแปลงข้อมูล JSON: แพ็กเกจ `http` จะคืนค่าเป็น String ซึ่งต้องใช้ `jsonDecode()` แปลงเป็น Map เอง ส่วน `dio` จะแปลง JSON เป็น Map หรือ List ให้อัตโนมัติผ่าน `response.data` ทำให้ลดขั้นตอนลง
+2. การกำหนด Query Parameters: `http` ต้องนำตัวแปรมาต่อเป็น String ใน URL เอง (เช่น ?q=...&appid=...) ส่วน `dio` สามารถใส่เป็น Map ใน `queryParameters: {}` ได้เลย ทำให้โค้ดอ่านง่ายและลดข้อผิดพลาด
+3. การจัดการ Exception: `http` ต้องเขียน catch แยกหลายชนิด (เช่น TimeoutException, ClientException) ส่วน `dio` จะจับรวบเป็น `DioException` ตัวเดียว แล้วให้เราไปเช็กเงื่อนไขย่อยผ่าน `e.type` ทำให้จัดการโครงสร้าง Error ได้เป็นระเบียบกว่า
 ```
->
-> ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
-```text
-บันทึกคำตอบที่นี่
+> ✅ **Checkpoint 5.3**
+> แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4
+
+```dart
+} on DioException catch (e) {
+    if (e.type == DioExceptionType.connectionTimeout) {
+      throw Exception('การเชื่อมต่อหมดเวลา กรุณาลองใหม่อีกครั้ง');
+    } else if (e.type == DioExceptionType.badResponse) {
+      // เซิร์ฟเวอร์ตอบกลับมาแล้วแต่ status code ผิดพลาด (เช่น 404, 500)
+      throw Exception('เซิร์ฟเวอร์ตอบกลับผิดพลาด (รหัส: ${e.response?.statusCode})');
+    } else if (e.type == DioExceptionType.receiveTimeout) {
+      // เพิ่มเงื่อนไข: เซิร์ฟเวอร์รับคำขอแล้ว แต่ใช้เวลาส่งข้อมูลกลับมานานเกินไป
+      throw Exception('เซิร์ฟเวอร์ใช้เวลาตอบกลับนานเกินไป กรุณาลองใหม่อีกครั้ง');
+    } else if (e.type == DioExceptionType.connectionError) {
+      // เพิ่มเงื่อนไข: ไม่มีอินเทอร์เน็ต หรือไม่สามารถเชื่อมต่อเครือข่ายได้เลย
+      throw Exception('ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบเครือข่าย');
+    }
+
+    throw Exception('เกิดข้อผิดพลาด: ${e.message}');
+  }
 ```
+
 ---
 
 ## ส่วนที่ 7: ต่อยอดเข้าสู่โปรเจกต์ Campus Marketplace
 
 ส่วนนี้คือจุดที่เชื่อมความรู้ทั้งบทไปใช้กับโปรเจกต์หลักที่จะพัฒนาต่อเนื่อง **ห้ามข้ามส่วนนี้**
 
-> 💡 **ภาพรวมก่อนเริ่มส่วนที่ 7** ส่วนนี้คือการเปลี่ยนจากข้อมูลสินค้าแบบ **mockup data** (ข้อมูลที่เขียนไว้ตายตัวในสัปดาห์ก่อนหน้านี้ เช่น `final products = [Product(...), Product(...)];`) ให้กลายเป็นข้อมูลจริงที่ดึงผ่านเครือข่ายจาก **Fake Store API** สรุปลำดับขั้นตอนและไฟล์ที่ต้องสร้างใหม่/แก้ไขมีดังนี้
+> 💡 **ภาพรวมก่อนเริ่มส่วนที่ 7**
+> ส่วนนี้คือการเปลี่ยนจากข้อมูลสินค้าแบบ **mockup data** (ข้อมูลที่เขียนไว้ตายตัวในสัปดาห์ก่อนหน้านี้ เช่น `final products = [Product(...), Product(...)];`) ให้กลายเป็นข้อมูลจริงที่ดึงผ่านเครือข่ายจาก **Fake Store API** สรุปลำดับขั้นตอนและไฟล์ที่ต้องสร้างใหม่/แก้ไขมีดังนี้
+
+| ขั้นตอน | สิ่งที่ทำ | ไฟล์ที่เกี่ยวข้อง |
+|---|---|---|
+| 7.1 | เตรียมโปรเจกต์ `campus_marketplace` จากสัปดาห์ที่แล้ว | ทั้งโปรเจกต์ (เปลี่ยนชื่อโฟลเดอร์/แพ็กเกจ หรือสร้างใหม่) |
+| 7.2 | สร้าง Model ใหม่ให้ตรงกับโครงสร้าง JSON ของ Fake Store API | 🆕 สร้างใหม่ชื่อ `lib/models/item.dart` |
+| 7.3 | แยก Interface กับ Implementation สำหรับดึงข้อมูลจริงผ่าน HTTP (Repository Pattern) | 🆕 สร้างไฟล์ใหม่ชื่อ `lib/repositories/item_repository.dart`<br>🆕 สร้างไฟล์ใหม่ชื่อ `lib/repositories/item_repository_api.dart` |
+| 7.4 | เปลี่ยนหน้าจอที่เคยแสดง mock data ให้ดึงข้อมูลจริงผ่าน Repository แทน โดยยังคงปุ่ม "เพิ่มลงตะกร้า" และการไปหน้า Checkout เดิมไว้ | ✏️ แก้ไขไฟล์ `lib/screens/home_page.dart` (หรือชื่อไฟล์หน้าแสดงรายการสินค้าที่ใช้มาในสัปดาห์ก่อนหน้า)<br>✏️ แก้ไขไฟล์จุดที่สร้าง `HomePage` ขึ้นมาจริง เช่น `lib/main.dart` (ต้องส่ง `ItemRepositoryApi()` เข้าไปทาง constructor)<br>✏️ แก้ไขไฟล์ทุกจุดที่ยังอ้างอิง Type `Product` เดิม เช่นใน `CartModel` ต้องเปลี่ยนเป็น `Item` ให้ตรงกัน |
+
+> **แนวคิดสำคัญที่ต้องเข้าใจก่อนลงมือปฏิบัติ**
+> หน้าที่แสดงรายการสินค้าจากสัปดาห์ก่อนหน้า (`HomePage` หรือชื่อไฟล์ที่ใช้) ของเก่าจะมี List ของ `Product` ที่สร้างไว้ตายตัวในโค้ด ไม่ได้ดึงจากเครือข่ายเลย เป้าหมายของส่วนนี้คือเปลี่ยน "แหล่งที่มาของข้อมูล" จากลิสต์ตายตัวนั้น ให้เป็นการเรียก `ItemRepository.getItems()` ที่ไปดึงจาก API จริงแทน โดยที่ตรรกะการทำงานฝั่ง UI เดิมจากสัปดาห์ 5 (ปุ่ม "เพิ่มลงตะกร้า" ที่เรียก `context.read<CartModel>().add(...)`, ไอคอนตะกร้าที่นับจำนวนใน AppBar, และการกดไปหน้า `CheckoutPage`) **ไม่ต้องแก้ไขตรรกะเลย แค่ต้องคัดลอก/รวมกลับเข้ามาในหน้าใหม่ด้วย** เพราะโครงโค้ดตัวอย่างในขั้นตอนที่ 7.4 ด้านล่างมีแค่โครงสร้าง `FutureBuilder` เปล่า ๆ ยังไม่ได้ใส่ AppBar หรือปุ่มเหล่านี้กลับเข้าไป ถ้าคัดลอกไปวางทับทั้งไฟล์โดยตรง จะทำให้ปุ่มเพิ่มลงตะกร้า ไอคอนตะกร้า และปุ่มไปหน้า Checkout หายไปทั้งหมด — นี่คือประโยชน์ของการแยก Interface ออกจาก Implementation ตามหลัก Repository Pattern ที่เรียนไปแล้ว โดยเปลี่ยนแค่ต้นทางข้อมูล ไม่ต้องเขียน UI ใหม่ทั้งหมด
 >
-> | ขั้นตอน | สิ่งที่ทำ | ไฟล์ที่เกี่ยวข้อง |
-> |---|---|---|
-> | 7.1 | เตรียมโปรเจกต์ `campus_marketplace` จากสัปดาห์ที่แล้ว | ทั้งโปรเจกต์ (เปลี่ยนชื่อโฟลเดอร์/แพ็กเกจ หรือสร้างใหม่) |
-> | 7.2 | สร้าง Model ใหม่ให้ตรงกับโครงสร้าง JSON ของ Fake Store API | 🆕 สร้างใหม่ชื่อ `lib/models/item.dart` |
-> | 7.3 | แยก Interface กับ Implementation สำหรับดึงข้อมูลจริงผ่าน HTTP (Repository Pattern) | 🆕 สร้างไฟล์ใหม่ชื่อ `lib/repositories/item_repository.dart`<br>🆕 สร้างไฟล์ใหม่ชื่อ `lib/repositories/item_repository_api.dart` |
-> | 7.4 | เปลี่ยนหน้าจอที่เคยแสดง mock data ให้ดึงข้อมูลจริงผ่าน Repository แทน โดยยังคงปุ่ม "เพิ่มลงตะกร้า" และการไปหน้า Checkout เดิมไว้ | ✏️ แก้ไขไฟล์ `lib/screens/home_page.dart` (หรือชื่อไฟล์หน้าแสดงรายการสินค้าที่ใช้มาในสัปดาห์ก่อนหน้า)<br>✏️ แก้ไขไฟล์ จุดที่สร้าง `HomePage` ขึ้นมาจริง เช่น `lib/main.dart` (ต้องส่ง `ItemRepositoryApi()` เข้าไปทาง constructor)<br>✏️ แก้ไขไฟล์ ทุกจุดที่ยังอ้างอิง Type `Product` เดิม เช่นใน `CartModel` ต้องเปลี่ยนเป็น `Item` ให้ตรงกัน |
->
->
-> **แนวคิดสำคัญที่ต้องเข้าใจก่อนลงมือปฏิบัติ** หน้าที่แสดงรายการสินค้าจากสัปดาห์ก่อนหน้า (`HomePage` หรือชื่อไฟล์ที่ใช้) ของเก่าจะมี List ของ `Product` ที่สร้างไว้ตายตัวในโค้ด ไม่ได้ดึงจากเครือข่ายเลย เป้าหมายของส่วนนี้ คือเปลี่ยน "แหล่งที่มาของข้อมูล" จากลิสต์ตายตัวนั้น ให้เป็นการเรียก `ItemRepository.getItems()` ที่ไปดึงจาก API จริงแทน โดยที่ตรรกะการทำงานฝั่ง UI เดิมจากสัปดาห์ 5 (ปุ่ม "เพิ่มลงตะกร้า" ที่เรียก `context.read<CartModel>().add(...)`, ไอคอนตะกร้าที่นับจำนวนใน AppBar, และการกดไปหน้า `CheckoutPage`) **ไม่ต้องแก้ไขตรรกะเลย แค่ต้องคัดลอก/รวมกลับเข้ามาในหน้าใหม่ด้วย** เพราะโครงโค้ดตัวอย่างในขั้นตอนที่ 7.4 ด้านล่างมีแค่โครงสร้าง `FutureBuilder` เปล่า ๆ ยังไม่ได้ใส่ AppBar หรือปุ่มเหล่านี้กลับเข้าไป ถ้าคัดลอกไปวางทับทั้งไฟล์โดยตรง จะทำให้ปุ่มเพิ่มลงตะกร้า ไอคอนตะกร้า และปุ่มไปหน้า Checkout หายไปทั้งหมด — นี่คือประโยชน์ของการแยก Interface ออกจาก Implementation ตามหลัก Repository Pattern ที่เรียนไปแล้ว  โดยเปลี่ยนแค่ต้นทางข้อมูล ไม่ต้องเขียน UI ใหม่ทั้งหมด
->
-> 💡 **หมายเหตุ** โปรเจกต์จากสัปดาห์ 5 มีแค่ `CartModel` (ปุ่ม "เพิ่มลงตะกร้า") เท่านั้น **ไม่มีฟีเจอร์ "ถูกใจ" (Favorites) อยู่เลย** ถ้าเปิดโปรเจกต์แล้วไม่เห็นปุ่มถูกใจ ไม่ใช่ความผิดพลาดของนักศึกษา เพราะสัปดาห์ 5 ไม่ได้เพิ่มเติมฟีเจอร์นี้ นักศึกษาอาจจะทำเพิ่มเติมในสัปดาห์นี้เพื่อให้งานสมบูรณ์ขึ้น
+> 💡 **หมายเหตุ**
+> โปรเจกต์จากสัปดาห์ 5 มีแค่ `CartModel` (ปุ่ม "เพิ่มลงตะกร้า") เท่านั้น **ไม่มีฟีเจอร์ "ถูกใจ" (Favorites) อยู่เลย** ถ้าเปิดโปรเจกต์แล้วไม่เห็นปุ่มถูกใจ ไม่ใช่ความผิดพลาดของนักศึกษา เพราะสัปดาห์ 5 ไม่ได้เพิ่มเติมฟีเจอร์นี้ นักศึกษาอาจจะทำเพิ่มเติมในสัปดาห์นี้เพื่อให้งานสมบูรณ์ขึ้น
 
 ### ขั้นตอนที่ 7.1 — 🔧 ทำตามขั้นตอน
 
 เปิดโปรเจกต์ที่ทำไว้ในสัปดาห์ที่ 5 (มี `Product` และ `CartModel` อยู่แล้ว) แล้วเปลี่ยนชื่อโฟลเดอร์/แพ็กเกจเป็น `campus_marketplace` หากยังไม่มีโปรเจกต์จากสัปดาห์ที่ 5 ให้สร้างใหม่ด้วย `flutter create campus_marketplace` แล้วคัดลอกโครงสร้าง `Product` และ `CartModel` จากบทเรียนสัปดาห์ที่ 5 มาเป็นจุดตั้งต้น
 
-⚠️ **สำคัญ** `campus_marketplace` เป็นคนละโปรเจกต์กับ `week6_api_lab` ที่ใช้ในส่วนที่ 1-5 ของใบงานนี้ ดังนั้น `http` package ที่เพิ่มไว้ใน `pubspec.yaml` ของ `week6_api_lab` ตอนขั้นตอนที่ 2.1 **จะไม่มีผลกับโปรเจกต์นี้เลย** ต้องเปิด `pubspec.yaml` ของ `campus_marketplace` แล้วเพิ่ม dependency นี้ซ้ำอีกครั้ง
+> ⚠️ **สำคัญ**
+> `campus_marketplace` เป็นคนละโปรเจกต์กับ `week6_api_lab` ที่ใช้ในส่วนที่ 1–5 ของใบงานนี้ ดังนั้น `http` package ที่เพิ่มไว้ใน `pubspec.yaml` ของ `week6_api_lab` ตอนขั้นตอนที่ 2.1 **จะไม่มีผลกับโปรเจกต์นี้เลย** ต้องเปิด `pubspec.yaml` ของ `campus_marketplace` แล้วเพิ่ม dependency นี้ซ้ำอีกครั้ง
 
 ```yaml
 dependencies:
@@ -613,11 +656,12 @@ dependencies:
 
 แล้วรัน `flutter pub get` ในเทอร์มินัลของโปรเจกต์ `campus_marketplace` (ไม่ใช่ของ `week6_api_lab`) ก่อนไปต่อขั้นตอนที่ 7.2 — ถ้าข้ามขั้นตอนนี้จะเจอ error `Couldn't resolve the package 'http'` ตอนคอมไพล์ `item_repository_api.dart` ในขั้นตอนที่ 7.3
 
-💡 **หมายเหตุเรื่อง `provider`**: ถ้านักศึกษาต่อยอดจากโปรเจกต์สัปดาห์ที่ 5 ตัวเดิมจริง ๆ (แค่เปลี่ยนชื่อโฟลเดอร์/แพ็กเกจ) `provider: ^6.1.2` ควรมีอยู่แล้วใน `pubspec.yaml` ตั้งแต่สัปดาห์ที่ 5 ขั้นตอนที่ 2.1 — แต่ถ้าเลือกสร้างโปรเจกต์ใหม่ด้วย `flutter create campus_marketplace` แล้วคัดลอกเฉพาะไฟล์ `Product`/`CartModel` มา จะ**ไม่มี** `provider` ใน `pubspec.yaml` ให้อัตโนมัติ ต้องเพิ่มเองตามตัวอย่างข้างบน ไม่เช่นนั้นจะเจอ error `Target of URI doesn't exist: 'package:provider/provider.dart'` ทันทีที่ `main.dart` พยายาม import `package:provider/provider.dart`
+> 💡 **หมายเหตุเรื่อง `provider`**
+> ถ้านักศึกษาต่อยอดจากโปรเจกต์สัปดาห์ที่ 5 ตัวเดิมจริง ๆ (แค่เปลี่ยนชื่อโฟลเดอร์/แพ็กเกจ) `provider: ^6.1.2` ควรมีอยู่แล้วใน `pubspec.yaml` ตั้งแต่สัปดาห์ที่ 5 ขั้นตอนที่ 2.1 — แต่ถ้าเลือกสร้างโปรเจกต์ใหม่ด้วย `flutter create campus_marketplace` แล้วคัดลอกเฉพาะไฟล์ `Product`/`CartModel` มา จะ**ไม่มี** `provider` ใน `pubspec.yaml` ให้อัตโนมัติ ต้องเพิ่มเองตามตัวอย่างข้างบน ไม่เช่นนั้นจะเจอ error `Target of URI doesn't exist: 'package:provider/provider.dart'` ทันทีที่ `main.dart` พยายาม import `package:provider/provider.dart`
 
 ### ขั้นตอนที่ 7.2 — 🧠 คิดเอง/ออกแบบเอง
 
-ใช้ **Fake Store API** (https://fakestoreapi.com) ซึ่งเป็น Public API ฟรีที่จำลองข้อมูลสินค้าจริง  ก่อนที่จะย้ายไปใช้ Firebase ในสัปดาห์ที่ถัดไป สินค้าหนึ่งชิ้นที่ API นี้คืนกลับมามีรูปร่างประมาณนี้
+ใช้ **Fake Store API** (https://fakestoreapi.com) ซึ่งเป็น Public API ฟรีที่จำลองข้อมูลสินค้าจริง ก่อนที่จะย้ายไปใช้ Firebase ในสัปดาห์ที่ถัดไป สินค้าหนึ่งชิ้นที่ API นี้คืนกลับมามีรูปร่างประมาณนี้
 
 ```json
 {
@@ -696,11 +740,11 @@ void main() {
 
 รันไฟล์นี้ด้วยวิธีเดียวกับขั้นตอนที่ 2.2 — กด **Run** ที่มุมขวาบนใน VS Code หรือรันจาก terminal ด้วยคำสั่ง `dart run lib/test_item_parse.dart`
 
-> ✅ **Checkpoint 7.1** ถ่ายภาพ Debug Console ที่ทดสอบ `Item.fromJson()` กับ JSON ตัวอย่างข้างต้นแล้ว print ค่าทั้ง 6 ฟิลด์ออกมาได้ถูกต้อง
+> ✅ **Checkpoint 7.1**
+> ถ่ายภาพ Debug Console ที่ทดสอบ `Item.fromJson()` กับ JSON ตัวอย่างข้างต้นแล้ว print ค่าทั้ง 6 ฟิลด์ออกมาได้ถูกต้อง
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="506" height="93" alt="image" src="https://github.com/user-attachments/assets/eb11e34b-c609-4998-99d7-849202d1524e" />
+
 ### ขั้นตอนที่ 7.3 — 🔧 ทำตาม (Interface) + 🧠 คิดเอง (Implementation)
 
 ในสัปดาห์ก่อนหน้า มีการเรียนหลักการ **Repository Pattern** ไปแล้วว่า Widget/ViewModel ไม่ควรรู้จักแหล่งข้อมูลโดยตรง (เช่น เรียก `http.get()` เองในไฟล์ UI) แต่ควรรู้จักผ่าน **Interface** เท่านั้น เพื่อให้สลับแหล่งข้อมูลได้โดยไม่ต้องแก้ Widget สัปดาห์นี้ Campus Marketplace มีแหล่งข้อมูลจริงให้ดึง (REST API) ซึ่งจะนำทฤษฎีเรื่อง Repository Pattern มาใช้งานจริง
@@ -759,11 +803,13 @@ class ItemRepositoryApi implements ItemRepository {
 
 แก้ไขหน้า `HomePage` ให้รับ `ItemRepository` เข้ามาทาง Constructor แทนการสร้าง `ItemRepositoryApi()` ขึ้นมาเองภายในหน้าจอ ตามหลัก Dependency Injection ที่เรียนไปแล้วในสัปดาห์ก่อนหน้านี้
 
-⚠️ **อย่าคัดลอกโครงเริ่มต้นด้านล่างไปวางทับไฟล์ `home_page.dart` เดิมทั้งหมด** เพราะโครงนี้แสดงเฉพาะส่วนที่เปลี่ยนแปลง (Constructor รับ `repository` + `FutureBuilder`) เท่านั้น ส่วน `AppBar` ที่มีไอคอนตะกร้า (`context.watch<CartModel>().itemCount`), ปุ่มไปหน้า `CheckoutPage`, และปุ่ม "เพิ่มลงตะกร้า" ต่อสินค้าแต่ละชิ้น (`context.read<CartModel>().add(...)`) ที่เขียนไว้แล้วในสัปดาห์ที่แล้ว **ต้องคงไว้ให้ครบ** เพียงแต่เปลี่ยนแหล่งข้อมูลสินค้าจาก List ตายตัวเป็นผลลัพธ์จาก `FutureBuilder` แทน
+> ⚠️ **อย่าคัดลอกโครงเริ่มต้นด้านล่างไปวางทับไฟล์ `home_page.dart` เดิมทั้งหมด**
+> เพราะโครงนี้แสดงเฉพาะส่วนที่เปลี่ยนแปลง (Constructor รับ `repository` + `FutureBuilder`) เท่านั้น ส่วน `AppBar` ที่มีไอคอนตะกร้า (`context.watch<CartModel>().itemCount`), ปุ่มไปหน้า `CheckoutPage`, และปุ่ม "เพิ่มลงตะกร้า" ต่อสินค้าแต่ละชิ้น (`context.read<CartModel>().add(...)`) ที่เขียนไว้แล้วในสัปดาห์ที่แล้ว **ต้องคงไว้ให้ครบ** เพียงแต่เปลี่ยนแหล่งข้อมูลสินค้าจาก List ตายตัวเป็นผลลัพธ์จาก `FutureBuilder` แทน
 
 โครงเริ่มต้นด้านล่างมี Constructor และการเรียก `widget.repository.getItems()` ใน `initState()` ให้เป็นตัวอย่าง พร้อมตัวอย่าง `AppBar` ที่คงไอคอนตะกร้าและปุ่มไป Checkout จากสัปดาห์ที่แล้ว ไว้ให้ครบ ส่วนการจัดการ 3 สถานะ Loading/Success/Error ภายใน `FutureBuilder` และปุ่ม "เพิ่มลงตะกร้า" ต่อรายการสินค้า ให้ออกแบบและเขียนต่อเองโดยใช้รูปแบบเดียวกับที่ทำไว้แล้วใน `WeatherSearchPage` (ขั้นตอนที่ 2.4) และ `ProductCard`
 
-⚠️ **จุดสำคัญเรื่อง import** ตัวอย่าง import ด้านล่างสมมติว่า `home_page.dart` อยู่ตำแหน่งเดียวกับที่สัปดาห์แล้ว วางไว้ คือ **อยู่ตรงใต้ `lib/`** (ระดับเดียวกับโฟลเดอร์ `models/` และ `repositories/` ไม่ได้อยู่ใน `lib/screens/`) ถ้าโปรเจกต์ของนักศึกษาวางไฟล์นี้ไว้คนละตำแหน่ง ให้ปรับ path ให้ตรงกับตำแหน่งไฟล์จริง (เช่น ถ้าย้าย `home_page.dart` ไปไว้ใน `lib/screens/` จริง ต้องเปลี่ยนกลับไปใช้ `../models/...` และ `../repositories/...` แทน) — **ทั้ง `Item` และ `ItemRepository` ต้อง import เข้ามาด้วยเสมอ** มิฉะนั้นจะเจอ error `The name 'Item' isn't a type` หรือ `'ItemRepository' isn't a type` ทันที
+> ⚠️ **จุดสำคัญเรื่อง import**
+> ตัวอย่าง import ด้านล่างสมมติว่า `home_page.dart` อยู่ตำแหน่งเดียวกับที่สัปดาห์แล้ววางไว้ คือ **อยู่ตรงใต้ `lib/`** (ระดับเดียวกับโฟลเดอร์ `models/` และ `repositories/` ไม่ได้อยู่ใน `lib/screens/`) ถ้าโปรเจกต์ของนักศึกษาวางไฟล์นี้ไว้คนละตำแหน่ง ให้ปรับ path ให้ตรงกับตำแหน่งไฟล์จริง (เช่น ถ้าย้าย `home_page.dart` ไปไว้ใน `lib/screens/` จริง ต้องเปลี่ยนกลับไปใช้ `../models/...` และ `../repositories/...` แทน) — **ทั้ง `Item` และ `ItemRepository` ต้อง import เข้ามาด้วยเสมอ** มิฉะนั้นจะเจอ error `The name 'Item' isn't a type` หรือ `'ItemRepository' isn't a type` ทันที
 
 ```dart
 import 'package:provider/provider.dart';
@@ -831,17 +877,17 @@ class _HomePageState extends State<HomePage> {
 }
 ```
 
-ปรับ `HomePage(repository: ItemRepositoryApi())` ในจุดที่สร้าง `HomePage` จริง (`main.dart` หรือ Router) และตรวจว่า `CartModel` (`ChangeNotifierProvider` ที่ครอบแอปไว้จากสัปดาห์ที่แล้ว กับ `CheckoutPage`  ยังทำงานได้ตามปกติกับข้อมูล `Item` ที่ดึงมาจาก Repository (ปรับ Type จาก `Product` เป็น `Item` ในทุกจุดที่เกี่ยวข้อง เช่นใน `CartModel` และ `CheckoutPage`)
+ปรับ `HomePage(repository: ItemRepositoryApi())` ในจุดที่สร้าง `HomePage` จริง (`main.dart` หรือ Router) และตรวจว่า `CartModel` (`ChangeNotifierProvider` ที่ครอบแอปไว้จากสัปดาห์ที่แล้ว) กับ `CheckoutPage` ยังทำงานได้ตามปกติกับข้อมูล `Item` ที่ดึงมาจาก Repository (ปรับ Type จาก `Product` เป็น `Item` ในทุกจุดที่เกี่ยวข้อง เช่นใน `CartModel` และ `CheckoutPage`)
 
-> ✅ **Checkpoint 7.3** รันแอปแล้วถ่ายภาพหน้าจอ Home ที่แสดงรายการสินค้าจริงจาก Fake Store API ผ่าน `ItemRepositoryApi` (ไม่ใช่ข้อมูล mock up) พร้อมภาพโครงสร้างไฟล์ที่แสดงให้เห็นว่ามีทั้ง `item_repository.dart` (Interface) และ `item_repository_api.dart` (Impl) แยกกันชัดเจน และทดสอบว่าปุ่ม "เพิ่มลงตะกร้า" กับการกดไปหน้า `CheckoutPage` จากสัปดาห์ที่ 5 ยังทำงานได้ปกติกับข้อมูล `Item` ชุดใหม่นี้ 
+> ✅ **Checkpoint 7.3**
+> รันแอปแล้วถ่ายภาพหน้าจอ Home ที่แสดงรายการสินค้าจริงจาก Fake Store API ผ่าน `ItemRepositoryApi` (ไม่ใช่ข้อมูล mock up) พร้อมภาพโครงสร้างไฟล์ที่แสดงให้เห็นว่ามีทั้ง `item_repository.dart` (Interface) และ `item_repository_api.dart` (Impl) แยกกันชัดเจน และทดสอบว่าปุ่ม "เพิ่มลงตะกร้า" กับการกดไปหน้า `CheckoutPage` จากสัปดาห์ที่ 5 ยังทำงานได้ปกติกับข้อมูล `Item` ชุดใหม่นี้
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6bc048fb-1392-4606-9793-452cd944bd9a" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/e5308eff-6654-427b-bbd6-722d17af38a2" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/030e780b-0be3-4415-bd38-9a8e996cf265" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/788f6fef-ca01-411c-adcd-5e46972a4f02" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/258a1752-8f0d-4832-aaa0-6f9a0b54af5f" />
 
 ---
 
-
-
-อย่าลืมให้เข้าไปทำ **[Quiz Chapter 6]** บน Moodle และควรอ่านทำความเข้าใจทฤษฎีก่อน ไม่ใช่แค่เข้าไปกดทำแบบทดสอบ เพื่อรอดูเฉลยเพียงอย่างเดียว
-
+> 📌 อย่าลืมให้เข้าไปทำ **Quiz Chapter 6** บน Moodle และควรอ่านทำความเข้าใจทฤษฎีก่อน ไม่ใช่แค่เข้าไปกดทำแบบทดสอบ เพื่อรอดูเฉลยเพียงอย่างเดียว
