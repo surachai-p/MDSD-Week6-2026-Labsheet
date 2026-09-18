@@ -604,9 +604,8 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
-```text
-บันทึกรูปที่นี่
-```
+<img width="1390" height="807" alt="image" src="https://github.com/user-attachments/assets/f29364bf-1c2a-4e94-930c-b04c990a8866" />
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -627,14 +626,22 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
-```text
-บันทึกคำตอบที่นี่
-```
->
+**คำตอบ**
+> dio จะแปลง JSON เป็น Map ให้อัตโนมัติผ่าน response.data ทำให้ไม่ต้องเรียก jsonDecode() เองแบบ http
+
+> การแนบพารามิเตอร์ต่อท้าย URL ใน dio สามารถโยนเป็น Map เข้าไปใน queryParameters ได้เลย ทำให้โค้ดอ่านง่ายกว่าการเอาข้อความมาต่อกัน (String concatenation) ด้วยเครื่องหมาย ? และ & แบบ http
+
+> การจัดการ Error ของ dio จะถูกจัดกลุ่มไว้ใต้ DioException ทั้งหมด แล้วให้เรามาเช็ค e.type แทน ในขณะที่ http จะแยกชนิด Exception ออกจากกันชัดเจน
+
+
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
-```text
-บันทึกคำตอบที่นี่
+```
+else if (e.type == DioExceptionType.receiveTimeout) {
+      throw Exception('เซิร์ฟเวอร์ใช้เวลาตอบกลับนานเกินไป');
+    } else if (e.type == DioExceptionType.connectionError) {
+      throw Exception('ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้');
+}
 ```
 ---
 
