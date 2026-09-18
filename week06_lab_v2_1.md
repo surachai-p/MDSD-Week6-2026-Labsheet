@@ -77,9 +77,68 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
-```text
-บันทึกรูปและคำตอบที่นี่
+**ภาพผลลัพธ์จากหน้าจอ postman**
+<img width="1535" height="792" alt="image" src="https://github.com/user-attachments/assets/5acb50f3-4200-4f7d-b2e4-ca1dd2d70041" />
+
+**Response Body**
+
 ```
+{
+    "coord": {
+        "lon": 100.5167,
+        "lat": 13.75
+    },
+    "weather": [
+        {
+            "id": 500,
+            "main": "Rain",
+            "description": "ฝนเบา ๆ",
+            "icon": "10d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 30.43,
+        "feels_like": 37.43,
+        "temp_min": 28.84,
+        "temp_max": 31.61,
+        "pressure": 1008,
+        "humidity": 77,
+        "sea_level": 1008,
+        "grnd_level": 1007
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 1.67,
+        "deg": 264,
+        "gust": 2.08
+    },
+    "rain": {
+        "1h": 1
+    },
+    "clouds": {
+        "all": 92
+    },
+    "dt": 1789712658,
+    "sys": {
+        "type": 2,
+        "id": 2112373,
+        "country": "TH",
+        "sunrise": 1789686417,
+        "sunset": 1789730264
+    },
+    "timezone": 25200,
+    "id": 1609350,
+    "name": "กรุงเทพมหานคร",
+    "cod": 200
+}
+```
+
+**key ใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป**
+- ชื่อเมืองดึงจากkey "name" 
+- อุณหภูมิ  key "temp" 
+- อุณหภูมิที่รู้สึกดึงจาก key "feels_like" 
+- คำอธิบายสภาพอากาศ: ดึงจาก key "description"
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
