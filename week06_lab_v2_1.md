@@ -80,6 +80,10 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
+<img width="1573" height="611" alt="Screenshot 2026-09-18 091720" src="https://github.com/user-attachments/assets/ba609a43-3d09-4b73-beb1-a99d0f05d18f" />
+
+
+
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
@@ -89,6 +93,12 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
+
+<img width="1151" height="470" alt="image" src="https://github.com/user-attachments/assets/05c50153-0bd8-4fce-ab20-579ff97c590f" />
+
+
+
+
 ---
 
 ## ส่วนที่ 2: สร้าง Model Class และเรียก API ด้วย http Package
@@ -185,6 +195,9 @@ void main() {
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="1457" height="923" alt="image" src="https://github.com/user-attachments/assets/50b112d5-c876-4f45-b9ea-8749a7c45a40" />
+
+
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
 สร้างไฟล์ `lib/services/weather_service.dart` แล้วเขียน `WeatherService` ต่อจากตัวอย่างโครงเริ่มต้นด้านล่างนี้  
@@ -232,9 +245,10 @@ class WeatherService {
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="957" height="190" alt="image" src="https://github.com/user-attachments/assets/45121346-c5f1-41b7-b63c-84b7760fe601" />
+
+<img width="708" height="107" alt="image" src="https://github.com/user-attachments/assets/32f353f1-4d6c-4480-a6ca-0a89b698b4cc" />
+
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -354,6 +368,16 @@ class MyApp extends StatelessWidget {
 ```text
 บันทึกรูปที่นี่
 ```
+1.ค้นหาเมืองที่มีจริง 
+  <img width="1906" height="621" alt="image" src="https://github.com/user-attachments/assets/779c77b0-5ec2-44a1-b152-701bc20ca2a7" />
+
+2. ค้นหาเมืองที่ไม่มีอยู่จริง
+<img width="1897" height="365" alt="image" src="https://github.com/user-attachments/assets/2bc142e4-4b54-40ff-a882-d6ce832c160b" />
+
+3. ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา
+<img width="1908" height="437" alt="image" src="https://github.com/user-attachments/assets/08eccc53-98db-4c96-b7e0-b84c080d5cdf" />
+
+
 
 ---
 
@@ -406,6 +430,11 @@ ElevatedButton(
 บันทึกรูปและคำตอบที่นี่
 ```
 
+<img width="526" height="215" alt="image" src="https://github.com/user-attachments/assets/fb3630c5-8f4c-4471-a01f-f1f30eacdb70" />
+
+
+
+
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
 เขียนฟังก์ชัน `updateDemoPost()` เพิ่มเติมด้วยตัวเอง โดยใช้ `createDemoPost()` ในขั้นตอนที่ 3.1 เป็นต้นแบบโครงสร้าง แต่เปลี่ยนให้เรียก HTTP Method **PUT** ไปยัง `https://jsonplaceholder.typicode.com/posts/1` พร้อม body ที่คุณกำหนดเนื้อหาให้มีชื่อนักศึกษา  โครงเริ่มต้นด้านล่างให้เฉพาะชื่อฟังก์ชันและ `Uri` เป็นตัวอย่าง ส่วนการเรียก `http.put()` พร้อม body และการ print ผลลัพธ์ให้เขียนต่อเอง
@@ -432,6 +461,8 @@ Future<void> updateDemoPost() async {
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
+<img width="703" height="181" alt="image" src="https://github.com/user-attachments/assets/66d88947-130a-4f60-9a77-e1f86fb5822a" />
+
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
@@ -487,6 +518,7 @@ GET https://fakestoreapi.com/products
 ```text
 บันทึกรูปที่นี่
 ```
+<img width="607" height="402" alt="image" src="https://github.com/user-attachments/assets/6cc6a605-e89e-47a6-acb4-085f55b94be7" />
 
 ---
 
@@ -571,11 +603,24 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 ```text
 บันทึกคำตอบที่นี่
 ```
+<img width="742" height="207" alt="image" src="https://github.com/user-attachments/assets/7cf1f679-5de6-45b0-bb84-3775d58b7e9d" />
+
+
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
 ```text
-บันทึกคำตอบที่นี่
+if (e.type == DioExceptionType.connectionTimeout) {
+      throw Exception('การเชื่อมต่อหมดเวลา กรุณาลองใหม่อีกครั้ง');
+    } else if (e.type == DioExceptionType.badResponse) {
+      throw Exception('เซิร์ฟเวอร์ตอบกลับผิดพลาด (${e.response?.statusCode})');
+    } else if (e.type == DioExceptionType.receiveTimeout) {
+      throw Exception( 'เซิร์ฟเวอร์ใช้เวลาตอบกลับนานเกินไป กรุณาลองใหม่อีกครั้ง',
+      );
+    } else if (e.type == DioExceptionType.connectionError) {
+      throw Exception( 'ไม่สามารถเชื่อมต่อเครือข่ายได้ กรุณาตรวจสอบอินเทอร์เน็ตของคุณ',
+      );
+    }
 ```
 ---
 
@@ -701,6 +746,10 @@ void main() {
 ```text
 บันทึกรูปที่นี่
 ```
+
+<img width="735" height="172" alt="image" src="https://github.com/user-attachments/assets/60fc898d-212d-4449-a003-0e8679ad9861" />
+
+
 ### ขั้นตอนที่ 7.3 — 🔧 ทำตาม (Interface) + 🧠 คิดเอง (Implementation)
 
 ในสัปดาห์ก่อนหน้า มีการเรียนหลักการ **Repository Pattern** ไปแล้วว่า Widget/ViewModel ไม่ควรรู้จักแหล่งข้อมูลโดยตรง (เช่น เรียก `http.get()` เองในไฟล์ UI) แต่ควรรู้จักผ่าน **Interface** เท่านั้น เพื่อให้สลับแหล่งข้อมูลได้โดยไม่ต้องแก้ Widget สัปดาห์นี้ Campus Marketplace มีแหล่งข้อมูลจริงให้ดึง (REST API) ซึ่งจะนำทฤษฎีเรื่อง Repository Pattern มาใช้งานจริง
@@ -838,6 +887,13 @@ class _HomePageState extends State<HomePage> {
 ```text
 บันทึกรูปที่นี่
 ```
+
+<img width="1907" height="911" alt="image" src="https://github.com/user-attachments/assets/beaf0db2-dcb2-4cb2-919a-cad5442fc643" />
+
+<img width="1902" height="901" alt="image" src="https://github.com/user-attachments/assets/03a3e208-de46-4784-a204-c7365d11e6a9" />
+
+<img width="1912" height="907" alt="image" src="https://github.com/user-attachments/assets/827b6142-2bf8-45af-9c7c-477305b604e7" />
+
 
 ---
 
