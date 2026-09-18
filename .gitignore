@@ -1,0 +1,38 @@
+# ---------------------------------------------------
+# 1. Flutter & Dart (ป้องกันไฟล์ระบบและไฟล์ Build)
+# ---------------------------------------------------
+**/build/
+**/.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+**/doc/api/
+
+# ---------------------------------------------------
+# 2. IDE & OS (ป้องกันไฟล์ตั้งค่าของโปรแกรม)
+# ---------------------------------------------------
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+Thumbs.db
+
+# ---------------------------------------------------
+# 3. ไฟล์ความลับ & API Keys (ป้องกันหลุดขึ้น Public)
+# ---------------------------------------------------
+*.env
+.env
+key.properties
+**/android/key.properties
+**/ios/Runner/GeneratedPluginRegistrant.m
+**/ios/Runner/GeneratedPluginRegistrant.h
+
+# ---------------------------------------------------
+# 4. ไฟล์โค้ดที่มี API Key ของโปรเจกต์นี้
+# ---------------------------------------------------
+**/services/weather_service.dart
+**/services/weather_service_dio.dart
