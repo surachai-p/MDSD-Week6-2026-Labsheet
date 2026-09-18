@@ -77,8 +77,28 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
-```text
-บันทึกรูปและคำตอบที่นี่
+```
+<img width="1425" height="322" alt="image" src="https://github.com/user-attachments/assets/f45fa804-55d1-42ce-a4bb-91f5d2ccefc3" />
+<img width="1427" height="441" alt="image-1" src="https://github.com/user-attachments/assets/063fef79-062e-4718-ba48-e1f342882b39" />
+key JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป
+name: 
+sys.country: 
+dt: 
+weather[].main: 
+weather[].description: 
+weather[].icon: 
+main.temp: 
+main.feels_like: 
+main.temp_min: 
+main.temp_max: 
+main.humidity: 
+main.pressure: 
+wind.speed:  
+wind.deg:  
+visibility:  
+clouds.all:  
+sys.sunrise:  
+sys.sunset: 
 ```
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -86,8 +106,10 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
-```text
-บันทึกรูปและคำตอบที่นี่
+```
+<img width="1437" height="283" alt="image-2" src="https://github.com/user-attachments/assets/8e5a411f-627f-45a9-964d-e15e08396f54" />
+กรณีที่เลือกทดสอบ: ลบค่า appid ออกจาก Request
+คาดว่า Server จะไม่อนุญาตให้เรียกใช้งาน API เนื่องจากไม่มี API Key จึงคาดว่าจะได้รับ Status Code 401
 ```
 ---
 
@@ -183,7 +205,9 @@ void main() {
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
 
 ```text
-บันทึกรูปที่นี่
+
+<img width="691" height="133" alt="image-3" src="https://github.com/user-attachments/assets/ea9a6f83-1ab2-45a3-84f5-09cb6adb6883" />
+
 ```
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
