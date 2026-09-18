@@ -27,6 +27,13 @@
 
 ---
 
+## Branch โค้ดโปรเจกต์
+
+- **campus_marketplace**: https://github.com/Job-67/MDSD-Week6-2026-Labsheet/tree/campus_marketplace
+- **week6_api_lab**: https://github.com/Job-67/MDSD-Week6-2026-Labsheet/tree/week6_api_lab
+
+---
+
 ## ทฤษฎีที่จำเป็นก่อนการทดลอง
 ### เครือข่ายและ REST API 
 
@@ -78,7 +85,14 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+⚠️ ยังไม่มีภาพหน้าจอ Postman กรณีสำเร็จ (Status 200) แนบอยู่ในโฟลเดอร์ image — มีแค่ภาพกรณี error (404) เท่านั้น
+กรุณายิง Request GET ไปที่ Bangkok อีกครั้งด้วย appid ที่ถูกต้อง แล้วถ่ายภาพหน้าจอ Postman ตอน Status Code ขึ้น 200 เพิ่มเติม
+
+จาก Response Body ที่เคยเห็น (โครงสร้างเดียวกับที่ใช้ทดสอบ error) key ที่คาดว่าจะต้องใช้แสดงผลในแอปมีดังนี้
+- name → ชื่อเมือง (เช่น "Bangkok")
+- main.temp → อุณหภูมิปัจจุบัน (°C)
+- main.feels_like → อุณหภูมิที่รู้สึกได้จริง
+- weather[0].description → คำอธิบายสภาพอากาศ (เช่น "เมฆกระจาย")
 ```
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -86,8 +100,21 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
+![Postman error case - city not found](image/Screenshot%202026-09-18%20100338.png)
+
 ```text
-บันทึกรูปและคำตอบที่นี่
+กรณีที่เลือกทดสอบ: เปลี่ยนชื่อเมืองในพารามิเตอร์ q เป็น "NotARealCity123" ซึ่งไม่มีอยู่จริงบนโลก
+
+คาดการณ์ก่อนกด Send: คิดว่า Status Code น่าจะเป็น 404 เพราะเป็นการขอ Resource (ข้อมูลอากาศของเมืองนี้)
+ที่ไม่มีอยู่ในระบบของเซิร์ฟเวอร์เลย จึงไม่น่าจะเป็น error ฝั่งเรา (4xx อื่น) หรือ error ฝั่งเซิร์ฟเวอร์ (5xx)
+
+ผลลัพธ์จริงที่ได้: Status Code 404 Not Found พร้อม Response Body
+{ "cod": "404", "message": "city not found" }
+ตรงกับที่คาดการณ์ไว้เป๊ะ
+
+อธิบายตามตารางหัวข้อ 6.3: 404 อยู่ในช่วง 4xx (Client Error) หมายความว่าเป็นความผิดพลาดที่มาจากฝั่งผู้ส่ง Request เอง
+(ในที่นี้คือส่งชื่อเมืองที่ไม่มีอยู่จริงไปขอ) ไม่ใช่ความผิดพลาดของเซิร์ฟเวอร์ (5xx) เซิร์ฟเวอร์ทำงานปกติ
+เพียงแต่หา Resource ที่ระบุไม่เจอเท่านั้น
 ```
 ---
 
@@ -183,7 +210,15 @@ void main() {
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
 
 ```text
-บันทึกรูปที่นี่
+⚠️ ยังไม่มีภาพ Debug Console ของ test_weather_parse.dart แนบไว้ในโฟลเดอร์ image (ที่มีอยู่เป็นภาพของขั้นตอน 5.3 ที่ทดสอบ Dio แล้ว ซึ่งเป็นคนละไฟล์)
+กรุณารัน `dart run lib/test_weather_parse.dart` แล้วถ่ายภาพ Debug Console เพิ่มเติม
+
+ผลลัพธ์ที่คาดว่าจะได้ (อ้างอิงจาก rawJson ตัวอย่างในโครง):
+cityName: Bangkok
+temperature: 32.5
+description: เมฆบางส่วน
+feelsLike: 36.1
+ทั้ง 4 ค่าตรงกับ JSON ที่ใส่ไว้ใน rawJson ทุกตัว แสดงว่า Weather.fromJson() ดึงค่าและ cast ชนิดข้อมูลถูกต้อง
 ```
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -233,7 +268,13 @@ class WeatherService {
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+กรณี statusCode == 200 (สำเร็จ): ทดสอบค้นหาเมือง "Bangkok" ที่มีอยู่จริง WeatherService.fetchWeather()
+เรียก Weather.fromJson(jsonDecode(response.body)) สำเร็จ และคืนค่า Weather object กลับไปให้หน้าจอแสดงผล
+(ดูภาพประกอบใน Checkpoint 2.3 กรณีที่ 1 ด้านล่าง ซึ่งแสดงผลอุณหภูมิและคำอธิบายอากาศได้ถูกต้อง)
+
+กรณี statusCode == 404 (ไม่พบเมือง): ทดสอบค้นหาเมือง "Bangkok999" ที่ไม่มีอยู่จริง เซิร์ฟเวอร์ตอบ 404 กลับมา
+โค้ดเข้าเงื่อนไข throw Exception ด้วยข้อความภาษาไทยที่อ่านเข้าใจง่าย เช่น "ไม่พบเมืองที่ค้นหา กรุณาตรวจสอบชื่อเมืองอีกครั้ง"
+แทนที่จะโยน error ดิบจากระบบขึ้นจอ (ดูภาพประกอบใน Checkpoint 2.3 กรณีที่ 2 ด้านล่าง)
 ```
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
@@ -351,8 +392,23 @@ class MyApp extends StatelessWidget {
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
+**กรณีที่ 1 — ค้นหาเมืองที่มีจริง (Bangkok) → สถานะสำเร็จ**
+
+![สถานะสำเร็จ](image/Screenshot%202026-09-18%20103416.png)
+
+**กรณีที่ 2 — ค้นหาเมืองที่ไม่มีอยู่จริง (Bangkok999) → สถานะผิดพลาด**
+
+![สถานะผิดพลาด เมืองไม่พบ](image/Screenshot%202026-09-18%20103428.png)
+
+**กรณีที่ 3 — ปิด Wi-Fi/Data แล้วค้นหา → สถานะผิดพลาดจากการเชื่อมต่อ**
+
+![สถานะผิดพลาด ไม่มีอินเทอร์เน็ต](image/Screenshot%202026-09-18%20103451.png)
+
 ```text
-บันทึกรูปที่นี่
+ทั้ง 3 กรณีทำงานตรงตามที่ออกแบบไว้
+1. เมืองมีจริง → แสดงชื่อเมือง อุณหภูมิ และคำอธิบายสภาพอากาศ (กรุงเทพมหานคร: 31.38°C, เมฆกระจาย, รู้สึกเหมือน 38.38°C)
+2. เมืองไม่มีจริง → แสดงข้อความสีแดง "ไม่พบเมือง "Bangkok999" กรุณาตรวจสอบชื่อเมืองอีกครั้ง" ซึ่งเป็นภาษาไทยที่อ่านเข้าใจง่าย ไม่ใช่ error ดิบจากระบบ
+3. ปิดอินเทอร์เน็ต → แสดงข้อความสีแดง "ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบการเชื่อมต่อ" ตรงกับ error ที่ดักจับด้วย on http.ClientException
 ```
 
 ---
@@ -402,8 +458,13 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
+
+![POST demo debug console - status 201](image/Screenshot%202026-09-18%20104029.png)
+
 ```text
-บันทึกรูปและคำตอบที่นี่
+Status Code: 201 Created ตรงตามที่คาดไว้ เพราะ POST คือการสร้างข้อมูลใหม่บนเซิร์ฟเวอร์ (แม้ JSONPlaceholder จะไม่ได้บันทึกจริง
+แต่ก็จำลองพฤติกรรมตอบกลับเหมือนสร้างสำเร็จ) Response Body ที่ได้กลับมามี id ใหม่ (id: 101) เพิ่มเข้ามา
+พร้อมข้อมูล title, body, userId ที่ส่งไปครบถ้วน แสดงว่า POST ทำงานถูกต้อง
 ```
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
@@ -429,8 +490,12 @@ Future<void> updateDemoPost() async {
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
 
+![PUT demo debug console - status 200](image/Screenshot%202026-09-18%20104045.png)
+
 ```text
-บันทึกรูปและคำตอบที่นี่
+Status Code: 200 OK ตรงตามที่คาดไว้ เพราะ PUT คือการแก้ไขข้อมูลที่มีอยู่แล้วทั้งก้อน (ไม่ใช่สร้างใหม่เหมือน POST
+จึงไม่ได้ Status 201) body ที่ส่งไปมีข้อมูลรหัสนักศึกษาและชื่อ (studentId: "67030098", studentName: "Theeranat Phutiwanich")
+ปนกับ title/body/userId เดิม เซิร์ฟเวอร์ตอบกลับข้อมูลเดียวกับที่ส่งไปครบทุกฟิลด์ แสดงว่า PUT ทำงานถูกต้อง
 ```
 ---
 
@@ -484,8 +549,13 @@ GET https://fakestoreapi.com/products
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
+
+![fetchAiProducts + fetchAiProductById debug console](image/Screenshot%202026-09-18%20104140.png)
+
 ```text
-บันทึกรูปที่นี่
+เรียก fetchAiProducts() สำเร็จ ได้สินค้าทั้งหมด 20 รายการจาก Fake Store API จริง (id #1-#20) ครบทุกฟิลด์
+(title, price, category) และทดลองเรียก fetchAiProductById(1) เพิ่มเติมด้วย ได้ผลลัพธ์เป็นสินค้ารายการเดียว (id #1)
+ตรงกับรายการแรกใน list ยืนยันว่าโค้ดที่ Gemini generate ให้ทำงานได้ถูกต้องกับ API จริง ไม่พบ error ระหว่างทดสอบ
 ```
 
 ---
@@ -545,8 +615,14 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
+
+![fetchWeatherWithDio debug console](image/Screenshot%202026-09-18%20104435.png)
+
 ```text
-บันทึกรูปที่นี่
+เรียก fetchWeatherWithDio('Bangkok') สำเร็จ ได้ผลลัพธ์ครบทั้ง 4 ฟิลด์
+cityName: กรุงเทพมหานคร, temperature: 31.27, description: เมฆกระจาย, feelsLike: 38.27
+ค่าใกล้เคียงกับที่ทดสอบด้วย http ก่อนหน้านี้ (ต่างกันเล็กน้อยเพราะเรียกคนละเวลากัน สภาพอากาศเปลี่ยนแปลงได้)
+ยืนยันว่า dio แปลง JSON เป็น Map ให้อัตโนมัติผ่าน response.data และนำไปสร้าง Weather.fromJson ได้ถูกต้องเหมือนกับ http
 ```
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -569,13 +645,36 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
 ```text
-บันทึกคำตอบที่นี่
+1. การแปลง JSON: http ต้องเรียก jsonDecode(response.body) เองทุกครั้งก่อนนำไปสร้าง Model ส่วน dio แปลงให้อัตโนมัติ
+   ผ่าน response.data ที่เป็น Map<String, dynamic> ให้เลย ทำให้โค้ดสั้นลง 1 บรรทัด
+
+2. Query Parameters: http ต้องต่อ string URL เองแบบ '$_baseUrl?q=$city&appid=$_apiKey&units=metric&lang=th'
+   ซึ่งเสี่ยงพิมพ์ผิดหรือลืม encode ค่า ส่วน dio ใช้ queryParameters: {...} เป็น Map ทำให้เขียนง่ายและอ่านง่ายกว่า
+   (dio จัดการ URL-encode ให้อัตโนมัติ)
+
+3. การจัดการ Exception: http ต้องดักจับหลายชนิดแยกกัน (on TimeoutException, on http.ClientException,
+   on FormatException) ทีละ catch block ส่วน dio รวบทุกอย่างไว้ใน DioException ตัวเดียว แล้วแยกเงื่อนไขย่อยด้วย
+   e.type (เช่น DioExceptionType.connectionTimeout, .badResponse) ทำให้โค้ดกระชับกว่าแต่ต้องจำชนิด enum ให้แม่นแทน
 ```
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
-```text
-บันทึกคำตอบที่นี่
+```dart
+} on DioException catch (e) {
+  if (e.type == DioExceptionType.connectionTimeout) {
+    throw Exception('การเชื่อมต่อหมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.badResponse) {
+    throw Exception('เซิร์ฟเวอร์ตอบกลับผิดพลาด (${e.response?.statusCode})');
+  } else if (e.type == DioExceptionType.receiveTimeout) {
+    // เซิร์ฟเวอร์ได้รับ request แล้วแต่ส่งข้อมูลกลับมาช้าเกินเวลาที่กำหนด
+    throw Exception('เซิร์ฟเวอร์ตอบกลับข้อมูลช้าเกินไป กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.connectionError) {
+    // เชื่อมต่อกับเซิร์ฟเวอร์ไม่ได้เลยตั้งแต่แรก เช่น ไม่มีอินเทอร์เน็ต หรือ DNS หาเซิร์ฟเวอร์ไม่เจอ
+    throw Exception('ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบการเชื่อมต่อ');
+  }
+
+  throw Exception('เกิดข้อผิดพลาด: ${e.message}');
+}
 ```
 ---
 
@@ -699,7 +798,17 @@ void main() {
 > ✅ **Checkpoint 7.1** ถ่ายภาพ Debug Console ที่ทดสอบ `Item.fromJson()` กับ JSON ตัวอย่างข้างต้นแล้ว print ค่าทั้ง 6 ฟิลด์ออกมาได้ถูกต้อง
 
 ```text
-บันทึกรูปที่นี่
+⚠️ ยังไม่มีภาพ Debug Console ของ test_item_parse.dart แนบไว้ในโฟลเดอร์ image
+กรุณารัน `dart run lib/test_item_parse.dart` แล้วถ่ายภาพ Debug Console เพิ่มเติม
+
+ผลลัพธ์ที่คาดว่าจะได้ (อ้างอิงจาก rawJson ตัวอย่างในโครง):
+id: 1
+title: Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops
+price: 109.95
+description: Your perfect pack for everyday use...
+category: men's clothing
+imageUrl: https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg
+ทั้ง 6 ค่าตรงกับ JSON ตัวอย่าง แสดงว่า Item.fromJson() ดึงค่า (รวมถึง imageUrl ที่ชื่อ key ไม่ตรงกับชื่อฟิลด์) ถูกต้อง
 ```
 ### ขั้นตอนที่ 7.3 — 🔧 ทำตาม (Interface) + 🧠 คิดเอง (Implementation)
 
@@ -835,9 +944,22 @@ class _HomePageState extends State<HomePage> {
 
 > ✅ **Checkpoint 7.3** รันแอปแล้วถ่ายภาพหน้าจอ Home ที่แสดงรายการสินค้าจริงจาก Fake Store API ผ่าน `ItemRepositoryApi` (ไม่ใช่ข้อมูล mock up) พร้อมภาพโครงสร้างไฟล์ที่แสดงให้เห็นว่ามีทั้ง `item_repository.dart` (Interface) และ `item_repository_api.dart` (Impl) แยกกันชัดเจน และทดสอบว่าปุ่ม "เพิ่มลงตะกร้า" กับการกดไปหน้า `CheckoutPage` จากสัปดาห์ที่ 5 ยังทำงานได้ปกติกับข้อมูล `Item` ชุดใหม่นี้ 
 
-```text
-บันทึกรูปที่นี่
-```
+**หน้า Home แสดงรายการสินค้าจริงจาก Fake Store API (ผ่าน `ItemRepositoryApi`)**
+
+![Home page - รายการสินค้าจริงจาก API](image/Screenshot%202026-09-18%20112025.png)
+
+**ทดสอบปุ่ม "บันทึกรายการโปรด" (feature เสริมที่เพิ่มเติมเอง) — กดแล้วนับจำนวนถูกต้อง**
+
+![บันทึกรายการโปรดแล้ว](image/Screenshot%202026-09-18%20112036.png)
+
+**หน้ารายการโปรด แสดงสินค้าที่บันทึกไว้ + Snackbar ยืนยันการเพิ่มลงตะกร้า**
+
+![รายการโปรดของฉัน](image/Screenshot%202026-09-18%20112049.png)
+
+**หน้าตะกร้าสินค้า แสดงรายการที่เพิ่มเข้ามาและมูลค่ารวมถูกต้อง**
+
+![ตะกร้าสินค้า](image/Screenshot%202026-09-18%20112101.png)
+
 
 ---
 
