@@ -77,8 +77,10 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
+![alt text](image.png)
+![alt text](image-1.png)
 ```text
-บันทึกรูปและคำตอบที่นี่
+การทดสอบ API สภาพอากาศด้วย Postman แสดงผลสำเร็จ (Status Code 200 OK) โดยข้อมูล JSON ที่ได้จะถูกนำไปแสดงผลบนแอปพลิเคชันผ่าน Key สำคัญ ได้แก่ name (ชื่อเมือง: Bangkok), main.temp (อุณหภูมิ: 30.62°C) และ weather[0].description (สภาพอากาศ: เมฆกระจาย)
 ```
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -86,8 +88,9 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
+![alt text](image-2.png)
 ```text
-บันทึกรูปและคำตอบที่นี่
+ทดสอบกรณีผิดพลาด (Error Case) โดยเปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง ผลลัพธ์ตรงตามคาดการณ์คือได้ Status Code 404 Not Found ซึ่งอยู่ในกลุ่ม 4xx Client Error โดยเซิร์ฟเวอร์ส่งข้อความแจ้งเตือนว่า "city not found" เนื่องจากไม่พบข้อมูลเมืองดังกล่าวในระบบ
 ```
 ---
 
@@ -181,10 +184,9 @@ void main() {
 รันไฟล์นี้แยกจากแอปหลัก — ใน VS Code เปิดไฟล์นี้แล้วกด **Run** ที่มุมขวาบน (หรือคลิกขวา > Run) หรือรันจาก terminal ด้วยคำสั่ง `dart run lib/test_weather_parse.dart` เพราะไฟล์นี้มี `main()` ของตัวเอง จึงรันแยกจากแอป Flutter หลักได้ทันทีโดยไม่ต้องเปิดโปรแกรมทั้งแอป
 
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
+![alt text](image-3.png)
 
-```text
-บันทึกรูปที่นี่
-```
+
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
 สร้างไฟล์ `lib/services/weather_service.dart` แล้วเขียน `WeatherService` ต่อจากตัวอย่างโครงเริ่มต้นด้านล่างนี้  
@@ -232,9 +234,12 @@ class WeatherService {
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+แบบสำเร็จ
+![alt text](image-4.png)
+![alt text](image-5.png)
+
+404
+![alt text](image-6.png)
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -351,9 +356,9 @@ class MyApp extends StatelessWidget {
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
-```text
-บันทึกรูปที่นี่
-```
+![alt text](image-7.png)
+![alt text](image-8.png)
+![alt text](image-10.png)
 
 ---
 
@@ -402,9 +407,7 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+![alt text](image-9.png)
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -428,10 +431,8 @@ Future<void> updateDemoPost() async {
 ```
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
+![alt text](image-11.png)
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
@@ -480,13 +481,19 @@ GET https://fakestoreapi.com/products
 ไม่ว่าจะเลือกแบบไหน เป้าหมายคือต้องเห็น **ผลลัพธ์จริงจาก Fake Store API** ปรากฏขึ้นมา  ถ้ารันแล้วเจอ error หรือโค้ดจาก Gemini ผิดพลาด (เช่น import ขาด, ชื่อ field ไม่ตรงกับ JSON จริง) ให้จดบันทึกข้อความ error และวิธีแก้ไขไว้ในด้านล่าง
 
 ```text
-บันทึก error และการแก้ไขที่นี่
+401 Unauthorized (API Key ผิด/ไม่อนุมัติ): แก้ไขโดยเปลี่ยนไปใช้ API Key ที่เปิดใช้งานสมบูรณ์แล้ว
+
+404 Not Found (หาเมืองไม่เจอ): ดักจับสถานะ 404 ใน Service แล้วแสดงข้อความแจ้งเตือนภาษาไทยสีแดงบน UI
+
+Network / Offline Error (ไม่มีอินเทอร์เน็ต): ดักจับ ClientException และ SocketException แล้วแจ้งเตือนให้ผู้ใช้เช็คอินเทอร์เน็ต
+
+Timeout Exception (เชื่อมต่อหมดเวลา): ตั้ง .timeout(10s) พร้อมดักจับข้อผิดพลาดเพื่อป้องกันแอปค้าง
+
+Type Mismatch / FormatException (ข้อมูลผิดรูปแบบ): แปลงค่าตัวเลขผ่าน (json['key'] as num).toDouble() เพื่อป้องกันแอปค้างเมื่อเจอเลขจำนวนเต็ม
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
-```text
-บันทึกรูปที่นี่
-```
+![alt text](image-12.png)
 
 ---
 
@@ -545,9 +552,8 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
-```text
-บันทึกรูปที่นี่
-```
+![alt text](image-13.png)
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -569,13 +575,32 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
 ```text
-บันทึกคำตอบที่นี่
+การแปลง JSON อัตโนมัติ: แพ็กเกจ http ต้องใช้ jsonDecode(response.body) เพื่อแปลงข้อความ JSON ให้เป็น Map ด้วยตนเอง ในขณะที่ dio จะแปลงข้อมูล JSON ใน response.data ให้เป็น Map/List ให้อัตโนมัติทันที
+
+การกำหนด Query Parameters: การใช้ http มักต้องนำพารามิเตอร์มาต่อเป็น URL String หรือสร้างวัตถุ Uri เอง แต่ dio รองรับการส่ง Query Parameters ผ่าน Map ในตัวแปร queryParameters: {'q': city, ...} ได้โดยตรง ซึ่งอ่านง่ายและเป็นระเบียบมากกว่า
+
+รูปแบบการจัดการ Exception: http ไม่ได้โยน Error ออกมาเมื่อเจอรหัส Status Code เช่น 404 หรือ 500 (ต้องเขียนเช็ค statusCode เอง) และต้องดักจับ SocketException หรือ TimeoutException แยกกันหลายชนิด แต่ dio รวมการจัดการข้อผิดพลาดทั้งหมดไว้ใน DioException เดียวกัน และสามารถแยกสาเหตุได้สะดวกผ่าน e.type (เช่น connectionTimeout, badResponse, connectionError)
 ```
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
-```text
-บันทึกคำตอบที่นี่
+```dart
+} on DioException catch (e) {
+  if (e.type == DioExceptionType.connectionTimeout) {
+    throw Exception('การเชื่อมต่อหมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.badResponse) {
+    // ตัวอย่าง: เซิร์ฟเวอร์ตอบกลับมาแล้วแต่ status code ผิดพลาด (เช่น 404, 500)
+    throw Exception('เซิร์ฟเวอร์ตอบกลับผิดพลาด (${e.response?.statusCode})');
+  } else if (e.type == DioExceptionType.receiveTimeout) {
+    // กรณีที่ส่ง Request ไปได้แล้ว แต่รอรับข้อมูลจากเซิร์ฟเวอร์นานเกินกำหนด
+    throw Exception('การรับข้อมูลจากเซิร์ฟเวอร์หมดเวลา กรุณาลองใหม่อีกครั้ง');
+  } else if (e.type == DioExceptionType.connectionError) {
+    // กรณีที่ไม่สามารถเชื่อมต่อเครือข่ายได้ เช่น ไม่ได้เปิดอินเทอร์เน็ต หรือ DNS มีปัญหา
+    throw Exception('ไม่สามารถเชื่อมต่อเครือข่ายได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
+  }
+  
+  throw Exception('เกิดข้อผิดพลาด: ${e.message}');
+}
 ```
 ---
 
