@@ -77,18 +77,59 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+
+<img width="1425" height="322" alt="image" src="https://github.com/user-attachments/assets/f45fa804-55d1-42ce-a4bb-91f5d2ccefc3" />
+<img width="1427" height="441" alt="image-1" src="https://github.com/user-attachments/assets/063fef79-062e-4718-ba48-e1f342882b39" />
+
+key JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป
+
+name: 
+
+sys.country: 
+
+dt: 
+
+weather[].main: 
+
+weather[].description: 
+
+weather[].icon: 
+
+main.temp: 
+
+main.feels_like: 
+
+main.temp_min: 
+
+main.temp_max: 
+
+main.humidity: 
+
+main.pressure: 
+
+wind.speed:  
+
+wind.deg:  
+
+visibility:  
+
+clouds.all:  
+
+sys.sunrise:  
+
+sys.sunset: 
+
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+
+<img width="1437" height="283" alt="image-2" src="https://github.com/user-attachments/assets/8e5a411f-627f-45a9-964d-e15e08396f54" />
+กรณีที่เลือกทดสอบ: ลบค่า appid ออกจาก Request
+คาดว่า Server จะไม่อนุญาตให้เรียกใช้งาน API เนื่องจากไม่มี API Key จึงคาดว่าจะได้รับ Status Code 401
+
 ---
 
 ## ส่วนที่ 2: สร้าง Model Class และเรียก API ด้วย http Package
@@ -182,9 +223,11 @@ void main() {
 
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
 
-```text
-บันทึกรูปที่นี่
-```
+
+
+<img width="691" height="133" alt="image-3" src="https://github.com/user-attachments/assets/ea9a6f83-1ab2-45a3-84f5-09cb6adb6883" />
+
+
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
 สร้างไฟล์ `lib/services/weather_service.dart` แล้วเขียน `WeatherService` ต่อจากตัวอย่างโครงเริ่มต้นด้านล่างนี้  
@@ -232,9 +275,7 @@ class WeatherService {
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="941" height="133" alt="image-5" src="https://github.com/user-attachments/assets/78b1c089-96b0-4f6f-842a-66dd3bba2517" />
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -351,9 +392,10 @@ class MyApp extends StatelessWidget {
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="926" height="302" alt="image-6" src="https://github.com/user-attachments/assets/58efeb0d-6860-45ba-861f-31031540aa66" />
+<img width="926" height="311" alt="image-7" src="https://github.com/user-attachments/assets/754dc84d-7948-4f83-94ca-ede6623e3540" />
+<img width="930" height="323" alt="image-8" src="https://github.com/user-attachments/assets/63ce04d0-6dc0-4196-be66-4e4d9a57c624" />
+
 
 ---
 
@@ -402,9 +444,9 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+
+<img width="315" height="134" alt="image-9" src="https://github.com/user-attachments/assets/31ee0149-2ac0-448a-a93b-bc8c7621cc1c" />
+
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -429,9 +471,8 @@ Future<void> updateDemoPost() async {
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="389" height="156" alt="image-10" src="https://github.com/user-attachments/assets/63f0323f-395d-4755-829a-3968b3f97412" />
+
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
