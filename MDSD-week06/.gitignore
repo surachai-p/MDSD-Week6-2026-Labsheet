@@ -1,0 +1,43 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.fvm/
+
+# IDE / editor
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Android / iOS / macOS / Linux / Windows generated files
+android/local.properties
+android/.gradle/
+android/app/*.iml
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Runner/GeneratedPluginRegistrant.*
+macos/Flutter/Generated.xcconfig
+macos/Flutter/ephemeral/
+linux/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugin_registrant.*
+
+# Logs / temp
+*.log
+*.tmp
+*.temp
+
+# Optional: keep local secrets out
+.env
+.env.*
