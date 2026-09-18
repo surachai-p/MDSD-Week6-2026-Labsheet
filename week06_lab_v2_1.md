@@ -76,7 +76,7 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 กด **Send** แล้วสังเกตผลลัพธ์สองส่วนคือ **Status Code** ที่แสดงมุมขวาบน และ **Response Body** ที่เป็น JSON ด้านล่าง
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
-
+![alt text](image.png)
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
@@ -85,9 +85,20 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
-
+![alt text](image.png)
 ```text
-บันทึกรูปและคำตอบที่นี่
+กรณีที่เลือกทดสอบ:
+ใส่ API Key ของ OpenWeather ไม่ถูกต้อง
+
+ผลที่คาดการณ์ไว้:
+คาดว่าจะได้รับ Status Code 401 Unauthorized เนื่องจาก API Key ไม่ถูกต้อง
+
+ผลการทดสอบจริง:
+ได้รับ Status Code 401 Unauthorized
+
+ผลตรงกับที่คาดการณ์ไว้ เพราะเซิร์ฟเวอร์ไม่อนุญาตให้เข้าถึงข้อมูลเมื่อ API Key ไม่ถูกต้อง
+
+Status Code 401 อยู่ในช่วง 4xx ซึ่งหมายถึงข้อผิดพลาดจากฝั่ง Client โดยเฉพาะกรณีนี้คือการยืนยันตัวตนไม่ผ่านหรือไม่มีสิทธิ์เข้าถึง API เนื่องจากใช้ API Key ไม่ถูกต้อง
 ```
 ---
 
@@ -181,7 +192,7 @@ void main() {
 รันไฟล์นี้แยกจากแอปหลัก — ใน VS Code เปิดไฟล์นี้แล้วกด **Run** ที่มุมขวาบน (หรือคลิกขวา > Run) หรือรันจาก terminal ด้วยคำสั่ง `dart run lib/test_weather_parse.dart` เพราะไฟล์นี้มี `main()` ของตัวเอง จึงรันแยกจากแอป Flutter หลักได้ทันทีโดยไม่ต้องเปิดโปรแกรมทั้งแอป
 
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
-
+![alt text](image.png)
 ```text
 บันทึกรูปที่นี่
 ```
@@ -231,7 +242,7 @@ class WeatherService {
 
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
-
+![alt text](image.png)
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
@@ -350,7 +361,9 @@ class MyApp extends StatelessWidget {
 ```
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
-
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
 ```text
 บันทึกรูปที่นี่
 ```
@@ -402,6 +415,7 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
+![alt text](image-4.png)
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
@@ -428,7 +442,7 @@ Future<void> updateDemoPost() async {
 ```
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
-
+![alt text](image-5.png)
 ```text
 บันทึกรูปและคำตอบที่นี่
 ```
@@ -484,8 +498,13 @@ GET https://fakestoreapi.com/products
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
+![alt text](image-6.png)
 ```text
-บันทึกรูปที่นี่
+ได้นำโค้ด AiProduct และฟังก์ชัน fetchAiProducts() มาทดลองเรียกใช้งานจริง
+ผ่านไฟล์ lib/test_ai_product.dart
+
+ผลการทดสอบสามารถดึงข้อมูลสินค้าจริงจาก Fake Store API ได้ทั้งหมด 20 รายการ
+และแสดงรหัส ชื่อสินค้า และราคาได้ถูกต้อง ไม่พบข้อผิดพลาด
 ```
 
 ---
@@ -545,6 +564,7 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
+![alt text](image-7.png)
 ```text
 บันทึกรูปที่นี่
 ```
@@ -569,14 +589,36 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
 ```text
-บันทึกคำตอบที่นี่
+1. การแปลง JSON:
+  http ต้องเรียก jsonDecode(response.body) เอง
+  ส่วน Dio แปลงข้อมูล JSON เป็น response.data ให้โดยอัตโนมัติ
+
+2. การกำหนด Query Parameters:
+  http มักสร้าง URL และต่อ Query String เอง
+  ส่วน Dio ใช้ queryParameters ทำให้กำหนดพารามิเตอร์ได้อ่านง่ายกว่า
+
+3. การจัดการ Exception:
+  http ดักจับ Exception แต่ละชนิดแยกกัน เช่น TimeoutException และ ClientException
+  ส่วน Dio ใช้ DioException แล้วตรวจสอบสาเหตุผ่าน DioExceptionType เช่น
+  connectionTimeout, receiveTimeout และ connectionError
 ```
+
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
-```text
-บันทึกคำตอบที่นี่
+```dart
+} else if (error.type == DioExceptionType.receiveTimeout) {
+  // เซิร์ฟเวอร์ตอบกลับไม่ทันเวลาที่กำหนด
+  throw Exception('เซิร์ฟเวอร์ส่งข้อมูลช้าเกินไป กรุณาลองใหม่อีกครั้ง');
+} else if (error.type == DioExceptionType.connectionError) {
+  // ไม่สามารถเชื่อมต่ออินเทอร์เน็ตหรือเซิร์ฟเวอร์ได้
+  throw Exception(
+    'ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบเครือข่าย',
+  );
+}
 ```
+
+เลือกจัดการทั้ง `receiveTimeout` และ `connectionError` เพราะเป็นข้อผิดพลาดที่ผู้ใช้อาจเจอได้จริงระหว่างเรียก API โดยแต่ละกรณีจะแสดงข้อความที่บอกสาเหตุแตกต่างกัน ทำให้ผู้ใช้เข้าใจและแก้ปัญหาได้ง่ายขึ้น
 ---
 
 ## ส่วนที่ 7: ต่อยอดเข้าสู่โปรเจกต์ Campus Marketplace
@@ -697,7 +739,7 @@ void main() {
 รันไฟล์นี้ด้วยวิธีเดียวกับขั้นตอนที่ 2.2 — กด **Run** ที่มุมขวาบนใน VS Code หรือรันจาก terminal ด้วยคำสั่ง `dart run lib/test_item_parse.dart`
 
 > ✅ **Checkpoint 7.1** ถ่ายภาพ Debug Console ที่ทดสอบ `Item.fromJson()` กับ JSON ตัวอย่างข้างต้นแล้ว print ค่าทั้ง 6 ฟิลด์ออกมาได้ถูกต้อง
-
+![alt text](image-8.png)
 ```text
 บันทึกรูปที่นี่
 ```
@@ -834,7 +876,9 @@ class _HomePageState extends State<HomePage> {
 ปรับ `HomePage(repository: ItemRepositoryApi())` ในจุดที่สร้าง `HomePage` จริง (`main.dart` หรือ Router) และตรวจว่า `CartModel` (`ChangeNotifierProvider` ที่ครอบแอปไว้จากสัปดาห์ที่แล้ว กับ `CheckoutPage`  ยังทำงานได้ตามปกติกับข้อมูล `Item` ที่ดึงมาจาก Repository (ปรับ Type จาก `Product` เป็น `Item` ในทุกจุดที่เกี่ยวข้อง เช่นใน `CartModel` และ `CheckoutPage`)
 
 > ✅ **Checkpoint 7.3** รันแอปแล้วถ่ายภาพหน้าจอ Home ที่แสดงรายการสินค้าจริงจาก Fake Store API ผ่าน `ItemRepositoryApi` (ไม่ใช่ข้อมูล mock up) พร้อมภาพโครงสร้างไฟล์ที่แสดงให้เห็นว่ามีทั้ง `item_repository.dart` (Interface) และ `item_repository_api.dart` (Impl) แยกกันชัดเจน และทดสอบว่าปุ่ม "เพิ่มลงตะกร้า" กับการกดไปหน้า `CheckoutPage` จากสัปดาห์ที่ 5 ยังทำงานได้ปกติกับข้อมูล `Item` ชุดใหม่นี้ 
-
+![alt text](image-9.png)
+![alt text](image-10.png)
+![alt text](image-11.png)
 ```text
 บันทึกรูปที่นี่
 ```
