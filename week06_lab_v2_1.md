@@ -76,9 +76,15 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 กด **Send** แล้วสังเกตผลลัพธ์สองส่วนคือ **Status Code** ที่แสดงมุมขวาบน และ **Response Body** ที่เป็น JSON ด้านล่าง
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
+<img width="1918" height="989" alt="image" src="https://github.com/user-attachments/assets/1e3a2071-2fa0-4d31-8e57-240078cf7863" />
+<img width="1920" height="995" alt="image" src="https://github.com/user-attachments/assets/511480ad-eb92-48cd-8119-467d6521bbbd" />
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+name → ชื่อเมือง
+main.temp → อุณหภูมิ
+main.feels_like → รู้สึกเหมือน
+main.humidity → ความชื้น
+weather[0].description → คำอธิบายสภาพอากาศ
 ```
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -87,7 +93,11 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+กรณีที่เลือกทดสอบ: เปลี่ยนชื่อเมืองใน Request เป็นชื่อเมืองที่ไม่มีอยู่จริง เช่น NonexistentCity123
+คาดการณ์ Status Code: 404 Not Found
+Status Code จริง: 404 Not Found
+ผลการทดสอบ: ตรงกับที่คาดการณ์ไว้
+การอธิบาย: เมื่อส่ง Request ด้วยชื่อเมืองที่ไม่มีอยู่ในระบบ เซิร์ฟเวอร์ไม่สามารถค้นหาข้อมูลสภาพอากาศของเมืองดังกล่าวได้ จึงตอบกลับด้วย Status Code 404 ซึ่งอยู่ในช่วง 4xx (Client Error) หมายถึงเกิดข้อผิดพลาดจาก Request ที่ส่งไปยังเซิร์ฟเวอร์
 ```
 ---
 
@@ -181,9 +191,13 @@ void main() {
 รันไฟล์นี้แยกจากแอปหลัก — ใน VS Code เปิดไฟล์นี้แล้วกด **Run** ที่มุมขวาบน (หรือคลิกขวา > Run) หรือรันจาก terminal ด้วยคำสั่ง `dart run lib/test_weather_parse.dart` เพราะไฟล์นี้มี `main()` ของตัวเอง จึงรันแยกจากแอป Flutter หลักได้ทันทีโดยไม่ต้องเปิดโปรแกรมทั้งแอป
 
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
+<img width="932" height="225" alt="image" src="https://github.com/user-attachments/assets/3a5910ff-225d-41fb-8744-3f79be97aa96" />
 
 ```text
-บันทึกรูปที่นี่
+cityName: กรุงเทพมหานคร
+temperature: 30.8
+description: เมฆกระจาย
+feelsLike: 37.36
 ```
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -231,9 +245,15 @@ class WeatherService {
 
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
+<img width="1095" height="925" alt="image" src="https://github.com/user-attachments/assets/2a0e2174-cf8f-4a45-9c9a-f4117cc1e2fa" />
+<img width="1092" height="898" alt="image" src="https://github.com/user-attachments/assets/f624e94d-bcf0-45a7-827f-6031bfb25f1a" />
 
 ```text
-บันทึกรูปและคำตอบที่นี่
+กรณีที่ 1
+Bangkok → Status Code: 200
+กรณีที่ 2
+ABCXYZ999 → Status Code: 404
+ทดสอบการตรวจสอบ statusCode จำนวน 2 กรณี ได้แก่ การค้นหาเมืองที่มีอยู่จริง ได้ Status Code 200 ซึ่งเป็นการทำงานสำเร็จ และการค้นหาเมืองที่ไม่มีอยู่จริง ได้ Status Code 404 ซึ่งหมายถึงไม่พบข้อมูลที่ร้องขอ
 ```
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
@@ -351,9 +371,14 @@ class MyApp extends StatelessWidget {
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
-```text
 บันทึกรูปที่นี่
-```
+
+(1) ค้นหาเมืองที่มีจริง
+<img width="1913" height="430" alt="image" src="https://github.com/user-attachments/assets/c13d65e2-3b51-40ff-aa83-c93778721e7c" />
+(2) ค้นหาเมืองที่ไม่มีอยู่จริง
+<img width="1920" height="471" alt="image" src="https://github.com/user-attachments/assets/61efc03e-3c29-4b46-91cb-b6a0ffb8e3e8" />
+(3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา
+<img width="1920" height="434" alt="image" src="https://github.com/user-attachments/assets/994d7e6c-4c2e-4edc-92c5-01e6ee95530c" />
 
 ---
 
