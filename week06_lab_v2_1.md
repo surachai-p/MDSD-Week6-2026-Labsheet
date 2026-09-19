@@ -77,18 +77,17 @@ https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=YOUR_API_KEY&uni
 
 > ✅ **Checkpoint 1.1** ถ่ายภาพหน้าจอ Postman ที่แสดง Status Code `200` พร้อม Response Body แบบเต็ม จากนั้นให้เขียนระบุใน ว่า key ใดใน JSON ที่คาดว่าจะต้องใช้แสดงผลในแอป (เช่น ชื่อเมือง, อุณหภูมิ, คำอธิบายสภาพอากาศ)
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="1285" height="622" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 09 46 02" src="https://github.com/user-attachments/assets/0283a288-d5f0-4185-868a-248823dab5af" />
+
+
 ### ขั้นตอนที่ 1.2 — 🧠 คิดเอง/ออกแบบเอง
 
 ออกแบบการทดสอบกรณีผิดพลาด (error case) อย่างน้อย 1 กรณี โดยเปลี่ยนค่าพารามิเตอร์บางตัวใน Request ให้เป็นสิ่งที่คาดว่าจะทำให้เซิร์ฟเวอร์ตอบกลับด้วย error (ตัวอย่างแนวทางที่เลือกได้ เช่น เปลี่ยนชื่อเมืองเป็นชื่อที่ไม่มีอยู่จริง, ใส่ `appid` ผิด, หรือลบ `appid` ออกไปเลย) **ก่อนกด Send ให้เขียนคาดการณ์ ก่อนว่า นักศึกษาคิดว่า Status Code จะเป็นอะไร** แล้วจึงทดสอบจริงเพื่อเทียบกับที่คาดไว้
 
 > ✅ **Checkpoint 1.2** บันทึกด้านล่างว่านักศึกษาเลือกทดสอบกรณีใด คาดการณ์ Status Code ไว้ว่าอะไร และ Status Code จริงที่ได้คืออะไร (ตรงหรือไม่ตรงกับที่คาดไว้) พร้อมอธิบายว่าผลลัพธ์ที่ได้ตรงกับช่วง Status Code ใดตามตารางในบทเรียนหัวข้อ 6.3
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="1288" height="198" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 09 49 54" src="https://github.com/user-attachments/assets/a8335d1c-0d44-4d24-bf6f-dc022f0d98e7" />
+
 ---
 
 ## ส่วนที่ 2: สร้าง Model Class และเรียก API ด้วย http Package
@@ -182,9 +181,9 @@ void main() {
 
 > ✅ **Checkpoint 2.1** รันไฟล์ทดสอบข้างต้น สังเกตค่าทั้ง 4 ฟิลด์ที่ `print()` ออกมาใน Debug Console ว่าตรงกับ Response Body จริงจาก Postman หรือไม่ ถ่ายภาพหน้าจอ Debug Console ที่แสดงว่าค่าทั้ง 4 ฟิลด์ถูกต้องตรงกับ JSON จริง
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="823" height="118" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 10 06 18" src="https://github.com/user-attachments/assets/bca5e2aa-b8da-4b11-9998-dfa57a88a370" />
+
+
 ### ขั้นตอนที่ 2.3 — 🧠 คิดเอง/ออกแบบเอง
 
 สร้างไฟล์ `lib/services/weather_service.dart` แล้วเขียน `WeatherService` ต่อจากตัวอย่างโครงเริ่มต้นด้านล่างนี้  
@@ -232,9 +231,10 @@ class WeatherService {
 
 > ✅ **Checkpoint 2.2** บันทึกผลการตรวจสอบ `statusCode` อย่างน้อย 2 กรณี (สำเร็จ และ 404) ตามเกณฑ์ข้างต้น
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="908" height="146" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 10 31 55" src="https://github.com/user-attachments/assets/d0a8fe66-a6da-457a-b934-8c6369bbe762" />
+<img width="933" height="94" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 10 32 52" src="https://github.com/user-attachments/assets/90fe583f-15b9-4d8e-b1bc-f387de5e9b31" />
+
+
 
 ### ขั้นตอนที่ 2.4 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -351,9 +351,11 @@ class MyApp extends StatelessWidget {
 
 > ✅ **Checkpoint 2.3** รันแอปแล้วทดสอบทั้ง 3 สถานการณ์ คือ (1) ค้นหาเมืองที่มีจริง (2) ค้นหาเมืองที่ไม่มีอยู่จริง (3) ปิด Wi-Fi/Data บนเครื่องแล้วลองค้นหา ถ่ายภาพหน้าจอทั้ง 3 กรณี
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="1710" height="1112" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 10 42 50" src="https://github.com/user-attachments/assets/6280060f-4e9d-4f07-859c-6f6f4f66ae0f" />
+<img width="1710" height="1112" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 10 43 01" src="https://github.com/user-attachments/assets/b29db292-590b-455e-bc25-41e22c424c37" />
+<img width="1710" height="1112" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 10 43 21" src="https://github.com/user-attachments/assets/9323bb1f-7c2f-485c-bf6b-63e8d30d2dd7" />
+
+
 
 ---
 
@@ -402,9 +404,9 @@ ElevatedButton(
 จากนั้นรันแอป กดปุ่มนี้ แล้วดูผลลัพธ์ใน Debug Console (ปุ่มนี้เป็นแค่ปุ่มทดลองชั่วคราว ไม่ต้องมีการจัดการ Loading/Error ใด ๆ ต่างจากปุ่ม "ค้นหา" หลักของหน้า)
 
 > ✅ **Checkpoint 3.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code (ควรเป็น `201 Created`) พร้อม Response Body 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+
+<img width="928" height="400" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 10 48 27" src="https://github.com/user-attachments/assets/ba711abd-c295-4165-8868-9c64ead37ec8" />
+
 
 ### ขั้นตอนที่ 3.2 — 🧠 คิดเอง/ออกแบบเอง
 
@@ -429,9 +431,8 @@ Future<void> updateDemoPost() async {
 
 > ✅ **Checkpoint 3.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดง Status Code ของการเรียก PUT (ควรเป็น `200 OK`) 
 
-```text
-บันทึกรูปและคำตอบที่นี่
-```
+<img width="940" height="213" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 10 55 04" src="https://github.com/user-attachments/assets/a4d84407-39c2-47eb-930a-fb0ad5a67bff" />
+
 ---
 
 ## ส่วนที่ 4: ใช้ AI ช่วย Generate โค้ด API Client
@@ -481,12 +482,14 @@ GET https://fakestoreapi.com/products
 
 ```text
 บันทึก error และการแก้ไขที่นี่
+Error: Target of URI doesn't exist: 'package:http/http.dart'
+การแก้ไข: เพิ่มแพ็กเกจ http ในไฟล์ pubspec.yaml และรันคำสั่ง flutter pub get จากนั้นจึงสามารถ import package:http/http.dart ได้ตามปกติ
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
-```text
-บันทึกรูปที่นี่
-```
+
+<img width="1237" height="441" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 11 05 01" src="https://github.com/user-attachments/assets/f5e69fdd-1a8e-486e-85b6-9f122a811763" />
+
 
 ---
 
@@ -545,9 +548,9 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
-```text
-บันทึกรูปที่นี่
-```
+<img width="933" height="98" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 11 45 57" src="https://github.com/user-attachments/assets/49c3a389-f3f9-4a6c-9601-16d6f2077986" />
+
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -570,13 +573,28 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 
 ```text
 บันทึกคำตอบที่นี่
+จากการทดลองพบว่า `http` และ `dio` สามารถใช้เรียก API ได้เหมือนกัน แต่มีความแตกต่างกันหลายด้าน โดย `http` ต้องใช้ `jsonDecode()` เพื่อแปลงข้อมูล JSON จาก `response.body` ก่อนนำไปใช้งาน ส่วน `dio` สามารถรับข้อมูลผ่าน `response.data` ได้โดยตรง จึงช่วยลดขั้นตอนในการแปลงข้อมูล
+ด้านการกำหนด Query Parameters นั้น `http` ต้องจัดการผ่าน `Uri` หรือการสร้าง URL ส่วน `dio` สามารถกำหนดผ่าน `queryParameters` ได้โดยตรง ทำให้เขียนโค้ดได้สะดวกและอ่านง่ายกว่า
+ด้านการจัดการ Exception นั้น `dio` มี `DioException` และ `DioExceptionType` สำหรับแยกประเภทข้อผิดพลาด เช่น `connectionTimeout`, `badResponse`, `receiveTimeout` และ `connectionError` ทำให้สามารถกำหนดข้อความแจ้งเตือนให้เหมาะกับแต่ละสาเหตุได้
+
 ```
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
 ```text
 บันทึกคำตอบที่นี่
+    dart
+  } else if (e.type == DioExceptionType.receiveTimeout) {
+    throw Exception(
+      'รอรับข้อมูลจากเซิร์ฟเวอร์นานเกินไป กรุณาลองใหม่อีกครั้ง',
+    );
+  } else if (e.type == DioExceptionType.connectionError) {
+    throw Exception(
+      'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบอินเทอร์เน็ต',
+    );
+  }
 ```
+
 ---
 
 ## ส่วนที่ 7: ต่อยอดเข้าสู่โปรเจกต์ Campus Marketplace
@@ -698,9 +716,9 @@ void main() {
 
 > ✅ **Checkpoint 7.1** ถ่ายภาพ Debug Console ที่ทดสอบ `Item.fromJson()` กับ JSON ตัวอย่างข้างต้นแล้ว print ค่าทั้ง 6 ฟิลด์ออกมาได้ถูกต้อง
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="623" height="166" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 13 44 34" src="https://github.com/user-attachments/assets/23c85549-38f4-4782-8206-6a95b3b5df25" />
+
+
 ### ขั้นตอนที่ 7.3 — 🔧 ทำตาม (Interface) + 🧠 คิดเอง (Implementation)
 
 ในสัปดาห์ก่อนหน้า มีการเรียนหลักการ **Repository Pattern** ไปแล้วว่า Widget/ViewModel ไม่ควรรู้จักแหล่งข้อมูลโดยตรง (เช่น เรียก `http.get()` เองในไฟล์ UI) แต่ควรรู้จักผ่าน **Interface** เท่านั้น เพื่อให้สลับแหล่งข้อมูลได้โดยไม่ต้องแก้ Widget สัปดาห์นี้ Campus Marketplace มีแหล่งข้อมูลจริงให้ดึง (REST API) ซึ่งจะนำทฤษฎีเรื่อง Repository Pattern มาใช้งานจริง
@@ -835,9 +853,9 @@ class _HomePageState extends State<HomePage> {
 
 > ✅ **Checkpoint 7.3** รันแอปแล้วถ่ายภาพหน้าจอ Home ที่แสดงรายการสินค้าจริงจาก Fake Store API ผ่าน `ItemRepositoryApi` (ไม่ใช่ข้อมูล mock up) พร้อมภาพโครงสร้างไฟล์ที่แสดงให้เห็นว่ามีทั้ง `item_repository.dart` (Interface) และ `item_repository_api.dart` (Impl) แยกกันชัดเจน และทดสอบว่าปุ่ม "เพิ่มลงตะกร้า" กับการกดไปหน้า `CheckoutPage` จากสัปดาห์ที่ 5 ยังทำงานได้ปกติกับข้อมูล `Item` ชุดใหม่นี้ 
 
-```text
-บันทึกรูปที่นี่
-```
+<img width="1710" height="1112" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 13 38 38" src="https://github.com/user-attachments/assets/6c10ca00-ccfe-4256-8d6a-c47f79238d26" />
+<img width="1710" height="1112" alt="ภาพถ่ายหน้าจอ 2569-09-18 เวลา 13 38 52" src="https://github.com/user-attachments/assets/c3346503-7b4f-46a6-ab56-df4dfa9c91dc" />
+
 
 ---
 
