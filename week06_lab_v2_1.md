@@ -503,9 +503,12 @@ GET https://fakestoreapi.com/products
 ```
 
 > ✅ **Checkpoint 4.2** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchAiProducts()` (เช่น รายการสินค้าที่ print ออกมา) 
-```text
+``text
 บันทึกรูปที่นี่
-```
+> <img width="1905" height="981" alt="image" src="https://github.com/user-attachments/assets/fb72a87e-7335-418b-b493-060e84ac8235" />
+
+> 
+
 
 ---
 
@@ -564,9 +567,11 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 2. รูปแบบการเขียน query parameters (`queryParameters: {...}`) ต่างจากการต่อ string URL เองแบบที่ทำใน `WeatherService` (ขั้นตอนที่ 2.3) 
 
 > ✅ **Checkpoint 5.1** ถ่ายภาพหน้าจอ Debug Console ที่แสดงผลลัพธ์จริงจากการเรียก `fetchWeatherWithDio()` (ค่าทั้ง 4 ฟิลด์ของ `Weather` ที่ print ออกมา หรือแสดงผลบนหน้าจอถ้าเลือกแบบที่ 2)
-```text
+``text
 บันทึกรูปที่นี่
-```
+> <img width="928" height="351" alt="image" src="https://github.com/user-attachments/assets/3ef49cc2-76f5-4b56-b6f4-6569b9042780" />
+
+
 ### ขั้นตอนที่ 5.4 — 🧠 คิดเอง/ออกแบบเอง
 
 `DioException` มีหลายชนิด (`DioExceptionType`) แต่โค้ดในขั้นตอนที่ 5.2 จัดการเฉพาะ `connectionTimeout` ด้านล่างเป็นตัวอย่างการเพิ่มเงื่อนไขให้อีก 1 ชนิด (`badResponse`) ให้ดูเป็นแนวทาง จากนั้นให้เพิ่มเงื่อนไข `else if` อีกอย่างน้อย 1 ชนิดด้วยตัวเอง โดยเลือกจาก `DioExceptionType.receiveTimeout` หรือ `DioExceptionType.connectionError` (ห้ามซ้ำกับ `badResponse` ที่ให้เป็นตัวอย่างแล้ว) พร้อมข้อความแจ้งเตือนภาษาไทยที่เหมาะสมกับสาเหตุนั้นโดยเฉพาะ (ค้นคว้าความหมายของแต่ละชนิดได้จากเอกสารของแพ็กเกจ `dio` บน pub.dev)
@@ -587,14 +592,66 @@ Future<Weather> fetchWeatherWithDio(String city) async {
 
 > ✅ **Checkpoint 5.2** เปรียบเทียบสั้น ๆ ระหว่าง `http` กับ `dio` อย่างน้อย 3 ประเด็น โดยอ้างอิงจากสิ่งที่สังเกตได้จริงตอนทดลองในขั้นตอนที่ 5.3 เช่น การแปลง JSON อัตโนมัติ, การกำหนด Query Parameters, และรูปแบบการจัดการ Exception (`DioException` เทียบกับการดักจับหลายชนิดแยกกันแบบ `http`)
 
-```text
+``text
 บันทึกคำตอบที่นี่
-```
+## 📊 สรุปการเปรียบเทียบระหว่าง `http` และ `Dio` Package
+
+| หัวข้อเปรียบเทียบ | `http` Package | `Dio` Package |
+| :--- | :--- | :--- |
+| **การจัดการ URL** | ต้องใช้ `Uri.parse()` และต่อ Query String ใน String เอง | กำหนด `baseUrl` และส่ง `queryParameters` เป็น Map ได้โดยตรง |
+| **JSON Decoding** | ต้องเรียก `jsonDecode(response.body)` เองทุกครั้ง | แปลงเป็น Object/Map ให้อัตโนมัติผ่าน `response.data` |
+| **Error Handling** | ต้องเช็ก `statusCode != 200` และดักจับหลาย Exception แยกกัน (`TimeoutException`, `ClientException`) | รวมศูนย์การจับ Error ผ่าน `DioException` ทั้ง HTTP Status Code และปัญหา Network |
+| **Interceptors** | ไม่มีในตัว (ต้องเขียน Wrapper เอง) | มี **Interceptors** ในตัว ใช้ทำ Logging, Auth Token Injection หรือ Auto Refresh Token ได้ง่าย |
+| **การตั้งค่า Global** | ตั้งค่าซ้ำทุกครั้งที่เรียก API | ตั้งค่าครั้งเดียวใน `BaseOptions` (เช่น Timeout, Base URL, Headers) |
+``
 >
 > ✅ **Checkpoint 5.3** แสดงโค้ดเงื่อนไข `DioExceptionType` เพิ่มเติมที่เขียนเองในขั้นตอนที่ 5.4 
 
 ```text
+ตัวอย่างโค้ดที่เขียนเพิ่มเติม (นำไปใส่ใน catch ของ Dio)
+on DioException catch (e) {
+  // ดักจับและแยกแยะประเภท Error ของ Dio ด้วย DioExceptionType
+  switch (e.type) {
+    case DioExceptionType.connectionTimeout:
+      throw Exception('การเชื่อมต่อหมดเวลา (Connection Timeout)');
+      
+    case DioExceptionType.sendTimeout: // 👈 เพิ่มเติม: ส่งข้อมูลหมดเวลา
+      throw Exception('การส่งข้อมูลไปยังเซิร์ฟเวอร์หมดเวลา (Send Timeout)');
+      
+    case DioExceptionType.receiveTimeout:
+      throw Exception('การรอรับข้อมูลจากเซิร์ฟเวอร์หมดเวลา (Receive Timeout)');
+      
+    case DioExceptionType.badCertificate: // 👈 เพิ่มเติม: SSL Certificate มีปัญหา
+      throw Exception('ใบรับรองความปลอดภัย SSL/TLS ไม่ถูกต้อง (Bad Certificate)');
+      
+    case DioExceptionType.badResponse: // 👈 เพิ่มเติม: เซิร์ฟเวอร์ตอบกลับมาด้วย HTTP Error Status (4xx, 5xx)
+      final statusCode = e.response?.statusCode;
+      if (statusCode == 404) {
+        throw Exception('ไม่พบข้อมูลที่ต้องการ (404 Not Found)');
+      } else if (statusCode == 401) {
+        throw Exception('สิทธิ์การเข้าถึงไม่ถูกต้อง หรือ API Key ผิดพลาด (401 Unauthorized)');
+      }
+      throw Exception('เซิร์ฟเวอร์ตอบกลับด้วยข้อผิดพลาด (Status: $statusCode)');
+      
+    case DioExceptionType.cancel: // 👈 เพิ่มเติม: คำขอถูกยกเลิกก่อนทำงานเสร็จ
+      throw Exception('คำขอเชื่อมต่อถูกยกเลิก (Request Cancelled)');
+      
+    case DioExceptionType.connectionError:
+      throw Exception('ไม่สามารถเชื่อมต่ออินเทอร์เน็ตหรือเซิร์ฟเวอร์ได้ (Connection Error)');
+      
+    case DioExceptionType.unknown: // 👈 เพิ่มเติม: ข้อผิดพลาดอื่นๆ ที่ไม่ทราบสาเหตุ
+    default:
+      throw Exception('เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ: ${e.message}');
+  }
+}
+
 บันทึกคำตอบที่นี่
+ได้ทำการเพิ่มการจัดการ DioExceptionType ครบถ้วนทุกสถานะ ดังนี้:
+DioExceptionType.sendTimeout: ดักจับกรณีที่แอปพลิเคชันใช้เวลาส่งข้อมูลไปยังเซิร์ฟเวอร์นานเกินกำหนด
+DioExceptionType.badCertificate: ดักจับกรณีปัญหาความปลอดภัยจากใบรับรอง SSL/TLS ของเซิร์ฟเวอร์ที่ไม่ถูกต้อง
+DioExceptionType.badResponse: ดักจับกรณีที่เซิร์ฟเวอร์ส่ง HTTP Status Code ตระกูล 4xx หรือ 5xx กลับมา พร้อมระบุข้อความตามรหัสสถานะ เช่น 404 หรือ 401
+DioExceptionType.cancel: ดักจับกรณีที่ Request ถูกสั่งยกเลิกกลางคันก่อนที่เซิร์ฟเวอร์จะตอบกลับ
+DioExceptionType.unknown: ดักจับข้อผิดพลาดทั่วไปอื่นๆ ที่ไม่อยู่ในเงื่อนไขข้างต้น
 ```
 ---
 
