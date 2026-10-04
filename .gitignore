@@ -1,0 +1,50 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+Thumbs.db
+.history
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Environment and sensitive keys
+.env
+.env.*
+*.key
+
+# Flutter / Dart build and cache artifacts
+**/.dart_tool/
+**/build/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.pub-cache/
+**/.pub/
+**/coverage/
+
+# Android / iOS / Web ephemeral artifacts
+**/android/.gradle/
+**/android/local.properties
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/generated/
+**/ios/.symlinks/
+**/ios/Pods/
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/ServiceDefinitions.json
+**/windows/flutter/ephemeral/
+**/linux/flutter/ephemeral/
+**/macos/Flutter/ephemeral/
